@@ -37,18 +37,6 @@
           </div>
         </div>
       </div>
-      <div *ngIf="showDV() || hasStatus('592') || hasStatus('595')" fxLayout="column"
-           [ngClass]="{'border-top': media.isMatched('(min-width: 960px)'), 'border-top-sm': !media.isMatched('(min-width: 960px)')}">
-        <div *ngIf="showDV()" [ngClass]="{'border-bottom': hasStatus('592') || hasStatus('595')}">
-          <app-block [nid]="'88'"></app-block>
-        </div>
-        <div *ngIf="hasStatus('592')" [ngClass]="{'border-bottom': hasStatus('595')}">
-          <app-block [nid]="'89'"></app-block>
-        </div>
-        <div *ngIf="hasStatus('595')">
-          <app-block [nid]="'839'"></app-block>
-        </div>
-      </div>
       <div *ngIf="show_loc" class="triage-loc" fxLayout="column"
            [ngClass]="{'border-top': media.isMatched('(min-width: 960px)'), 'border-top-sm': !media.isMatched('(min-width: 960px)')}">
         <div class="pad">
@@ -63,7 +51,6 @@
       </div>
       <div fxFlex="100" fxFlex.gt-sm="30" class="blocks"
            [ngClass]="{'backg1 bg': !media.isMatched('(min-width: 960px)'), 'padding-left border-left': media.isMatched('(min-width: 960px)')}">
-        <app-block [nid]="'86'"></app-block>
         <app-self-help-menu></app-self-help-menu>
       </div>
     </div>

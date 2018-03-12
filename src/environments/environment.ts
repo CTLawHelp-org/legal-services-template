@@ -6,6 +6,6 @@
 export const environment = {
   production: false,
   appId: 'ng5dev',
-  apiUrl: 'http://d8ctlawhelp.org',
+  apiUrl: 'http://d84.org',
   adminUrl: 'http://admin.d8ctlawhelp.org'
 };
