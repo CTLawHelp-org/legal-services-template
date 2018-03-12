@@ -6,7 +6,6 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { isPlatformBrowser, Location } from '@angular/common';
 import { Model } from './search.model';
-import { Angulartics2 } from 'angulartics2';
 import { MetaService } from '@ngx-meta/core';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
@@ -35,7 +34,6 @@ export class SearchComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     @Inject(PLATFORM_ID) private platformId,
     private location: Location,
-    private angulartics2: Angulartics2,
     private meta: MetaService,
     @Inject(DOCUMENT) private document: any,
     private iconRegistry: MatIconRegistry,
@@ -152,8 +150,6 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searches[prev_index] = obj;
         this.processSearch(this.searches[prev_index]);
       }
-      // set page view
-      this.angulartics2.pageTrack.next({ path: this.router.url });
     });
   }
 

@@ -19,14 +19,7 @@ export class FooterComponent implements OnInit {
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     private variableService: VariableService
-  ) {
-    iconRegistry.addSvgIcon(
-      'twitter',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/twitter.svg'));
-    iconRegistry.addSvgIcon(
-      'facebook',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/facebook.svg'));
-  }
+  ) {}
 
   ngOnInit() {
     this.variables = this.variableService;

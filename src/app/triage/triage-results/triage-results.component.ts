@@ -7,7 +7,6 @@ import { MatDialog, MatIconRegistry } from '@angular/material';
 import { isPlatformBrowser } from '@angular/common';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
-import { Angulartics2 } from 'angulartics2';
 import { MetaService } from '@ngx-meta/core';
 
 @Component({
@@ -35,7 +34,6 @@ export class TriageResultsComponent implements OnInit {
     @Inject(PLATFORM_ID) private platformId,
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
-    private angulartics2: Angulartics2,
     private meta: MetaService,
     @Inject(DOCUMENT) private document: any
   ) {

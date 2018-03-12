@@ -2,7 +2,6 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { DomSanitizer, Title } from '@angular/platform-browser';
 
 import { ApiService } from './api.service';
-import { AsyncLocalStorage } from 'angular-async-local-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { MatIconRegistry } from '@angular/material';
@@ -35,7 +34,6 @@ export class VariableService {
   constructor(
     private titleService: Title,
     private apiService: ApiService,
-    protected localStorage: AsyncLocalStorage, // Previously used localStorage Async service, now using native sessionStorage
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     @Inject(PLATFORM_ID) private platformId,

@@ -7,7 +7,6 @@ import { VariableService } from '../services/variable.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs/Observable';
 import { Location } from '@angular/common';
-import { Angulartics2 } from 'angulartics2';
 import { MetaService } from '@ngx-meta/core';
 import { DOCUMENT } from '@angular/platform-browser';
 
@@ -37,7 +36,6 @@ export class ApiRouterComponent implements OnInit, OnDestroy {
     private variableService: VariableService,
     private breakpointObserver: BreakpointObserver,
     private location: Location,
-    private angulartics2: Angulartics2,
     private meta: MetaService,
     @Inject(DOCUMENT) private document: any,
     private renderer2: Renderer2
@@ -100,28 +98,6 @@ export class ApiRouterComponent implements OnInit, OnDestroy {
     if (found) {
       this.loadNode(false);
     } else {
-      this.connection = this.apiService.getOldPaths().subscribe(data => {
-        this.old_paths = data;
-        this.checkOldPaths();
-      });
-    }
-  }
-
-  checkOldPaths() {
-    if (this.connection) {
-      this.connection.unsubscribe();
-    }
-    const self = this;
-    let found = false;
-    this.old_paths.forEach(function(i) {
-      if (i.old_path === self.url) {
-        found = true;
-        self.id = i.nid;
-      }
-    });
-    if (found) {
-      this.loadNode(true);
-    } else {
       // Page not found - Send to error page / home
       const er = this.lang + '/home';
       this.router.navigate([er]);
@@ -139,43 +115,15 @@ export class ApiRouterComponent implements OnInit, OnDestroy {
         && this.node[0].node_export.body[0].summary !== null) {
         this.meta.setTag('og:description', this.htmlToPlain(this.node[0].node_export.body[0].summary));
       }
-      const dimensions = {};
-      // analytics for field_reporting
-      if (this.node[0].node_export.field_reporting && this.node[0].node_export.field_reporting.length > 0) {
-        const output = [];
-        this.node[0].node_export.field_reporting.forEach(function (i) {
-          output.push(i.name);
-        });
-        dimensions['dimension1'] = output.join(';');
-      }
-      // analytics for field_nsmi
-      if (this.node[0].node_export.field_nsmi && this.node[0].node_export.field_nsmi.length > 0) {
-        const output = [];
-        this.node[0].node_export.field_nsmi.forEach(function (i) {
-          output.push(i.target_id);
-        });
-        dimensions['dimension2'] = output.join(';');
-      }
-      // analytics for field_type
-      if (this.node[0].node_export.field_type && this.node[0].node_export.field_type.length > 0) {
-        dimensions['dimension3'] = this.node[0].node_export.field_type[0].name;
-      }
-      // analytics for Page content ID
-      if (this.node[0].node_export.type[0].target_id === 'page') {
-        dimensions['dimension4'] = this.node[0].nid;
-      }
-      this.angulartics2.setUserProperties.next(dimensions);
       if (usePath && this.node[0].node_export.field_path && this.node[0].node_export.field_path.length > 0) {
         this.path = '/' + this.lang + '/' + this.node[0].node_export.field_path[0].value;
         this.location.replaceState(this.path);
       }
-      this.angulartics2.pageTrack.next({ path: this.path });
       this.doneLoading();
     });
   }
 
   doneLoading() {
-    this.angulartics2.setUserProperties.next({});
     if (this.connection) {
       this.connection.unsubscribe();
     }
@@ -194,15 +142,6 @@ export class ApiRouterComponent implements OnInit, OnDestroy {
 
   htmlToPlain(str: string): string {
     return str.replace(/<.*?>/g, '');
-  }
-
-  isValidNode(): boolean {
-    if (this.node[0].nid === '663' || this.node[0].nid === '664'
-      || this.node[0].nid === '670' || this.node[0].nid === '723') {
-      return true;
-    } else {
-      return false;
-    }
   }
 
 }

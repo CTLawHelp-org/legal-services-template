@@ -3,7 +3,6 @@ import { VariableService } from '../../services/variable.service';
 import { environment } from '../../../environments/environment';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef, MatIconRegistry } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Angulartics2 } from 'angulartics2';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { isPlatformBrowser } from '@angular/common';
 import { ApiService } from '../../services/api.service';
@@ -33,7 +32,6 @@ export class ContentListComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
-    private angulartics2: Angulartics2,
     private apiService: ApiService,
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
@@ -250,37 +248,6 @@ export class ContentListComponent implements OnInit {
         height = '95vh';
       }
     }
-    const props = {};
-    props['category'] = 'content';
-    props['value'] = 1;
-    // analytics for field_reporting
-    if (item.node_export.field_reporting && item.node_export.field_reporting.length > 0) {
-      const output = [];
-      item.node_export.field_reporting.forEach(function (i) {
-        output.push(i.name);
-      });
-      props['dimension1'] = output.join(';');
-    }
-    // analytics for field_nsmi
-    if (item.node_export.field_nsmi && item.node_export.field_nsmi.length > 0) {
-      const output = [];
-      item.node_export.field_nsmi.forEach(function (i) {
-        output.push(i.target_id);
-      });
-      props['dimension2'] = output.join(';');
-    }
-    // analytics for field_type
-    if (item.node_export.field_type && item.node_export.field_type.length > 0) {
-      props['dimension3'] = item.node_export.field_type[0].name;
-    }
-    // analytics for Page content ID
-    if (item.node_export.type[0].target_id === 'page') {
-      props['dimension4'] = item.nid;
-    }
-    this.angulartics2.eventTrack.next({
-      action: 'previewContent',
-      properties: props
-    });
     const dialogRef = this.dialog.open(ContentListDialogComponent, {
       width: width,
       height: height,
