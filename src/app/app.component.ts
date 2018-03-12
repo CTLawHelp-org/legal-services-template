@@ -1,6 +1,7 @@
 import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
 import { VariableService } from './services/variable.service';
 import { DOCUMENT } from '@angular/platform-browser';
 import { environment } from '../environments/environment';
@@ -33,6 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
     @Inject(DOCUMENT) private document,
     private route: ActivatedRoute,
     private router: Router,
+    private angulartics2GoogleAnalytics: Angulartics2GoogleAnalytics,
     private variableService: VariableService,
   ) {
     this.variables = this.variableService;
@@ -48,6 +50,32 @@ export class AppComponent implements OnInit, OnDestroy {
     this.variableService.varSubject.subscribe( () => {
       this.setLang();
     });
+
+    if (isPlatformBrowser(this.platformId) && environment.production) {
+      // setup analytics
+      const ga = this.renderer2.createElement('script');
+      ga.text = '(function(i,s,o,g,r,a,m){i[\'GoogleAnalyticsObject\']=r;i[r]=i[r]||function(){\n' +
+        '(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n' +
+        'm=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n' +
+        '})(window,document,\'script\',\'https://www.google-analytics.com/analytics.js\',\'ga\');\n' +
+        '\n' +
+        'ga(\'create\', \'UA-16262780-5\', \'auto\');';
+      this.renderer2.appendChild(this.document.body, ga);
+
+      // setup structured data
+      const sd = this.renderer2.createElement('script');
+      sd.type = 'application/ld+json';
+      const data = {
+        '@context': 'http://schema.org',
+        '@type': 'LegalService',
+        'name': this.variableService.site_title,
+        'logo': 'https://ctlawhelp.org/assets/ctlawhelp-logo.png',
+        'image': 'https://ctlawhelp.org/assets/ctlawhelp-logo.png',
+        'url': 'https://ctlawhelp.org'
+      };
+      sd.innerText = JSON.stringify(data);
+      this.renderer2.appendChild(this.document.head, sd);
+    }
   }
 
   setLang() {
@@ -83,6 +111,10 @@ export class AppComponent implements OnInit, OnDestroy {
         window.scrollTo(0, 0);
       });
     }
+  }
+
+  searchFab() {
+    this.searching = !this.searching;
   }
 
 }

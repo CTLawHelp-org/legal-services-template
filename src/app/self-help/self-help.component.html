@@ -42,9 +42,17 @@
           </div>
         </div>
       </div>
+      <div fxHide fxShow.gt-sm class="pad">
+        <app-block [nid]="'86'"></app-block>
+        <app-block *ngIf="term.tid === '537'" [nid]="'824'"></app-block>
+        <app-block *ngIf="term.tid === '535'" [nid]="'815'"></app-block>
+      </div>
     </div>
     <!-- Right -->
     <div fxFlex="100" fxFlex.gt-sm="70" fxLayout="column">
+      <div *ngIf="term.tid === '537'" class="pad">
+        <app-block [nid]="'823'"></app-block>
+      </div>
       <div class="pad">
         <div class="pad mat-elevation-z1">
           <!-- Terms and Content -->
@@ -99,6 +107,11 @@
             <app-self-help-content [src]="term.content" [term]="term"></app-self-help-content>
           </div>
         </div>
+      </div>
+      <div fxHide.gt-sm class="pad backg1 bg">
+        <app-block [nid]="'86'"></app-block>
+        <app-block *ngIf="term.tid === '537'" [nid]="'824'"></app-block>
+        <app-block *ngIf="term.tid === '535'" [nid]="'815'"></app-block>
       </div>
     </div>
   </div>

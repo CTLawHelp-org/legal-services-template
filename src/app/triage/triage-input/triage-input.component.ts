@@ -8,6 +8,7 @@ import { transition, trigger, query, stagger, animate, style } from '@angular/an
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { isPlatformBrowser } from '@angular/common';
+import { Angulartics2 } from 'angulartics2';
 import { Subject } from 'rxjs/Subject';
 
 @Component({
@@ -51,6 +52,7 @@ export class TriageInputComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private breakpointObserver: BreakpointObserver,
     @Inject(PLATFORM_ID) private platformId,
+    private angulartics2: Angulartics2
   ) {
     this.media = breakpointObserver;
   }
@@ -94,6 +96,7 @@ export class TriageInputComponent implements OnInit {
     if (this.connection) {
       this.connection.unsubscribe();
     }
+    this.startStats();
   }
 
   gotoTerm() {
@@ -127,6 +130,28 @@ export class TriageInputComponent implements OnInit {
       } else if (item['children'].length > 0) {
         self.findTid(item['children'], target, sub);
       }
+    });
+  }
+
+  startStats() {
+    const props = {};
+    props['category'] = 'triage';
+    props['value'] = 1;
+    props['metric1'] = 1;
+    this.angulartics2.eventTrack.next({
+      action: 'startTriage',
+      properties: props
+    });
+  }
+
+  finishStats() {
+    const props = {};
+    props['category'] = 'triage';
+    props['value'] = 1;
+    props['metric2'] = 1;
+    this.angulartics2.eventTrack.next({
+      action: 'finishTriage',
+      properties: props
     });
   }
 
@@ -216,6 +241,7 @@ export class TriageInputComponent implements OnInit {
     const conn = forkJoin([status_obs, issues_obs]).subscribe(results => {
       this.success.next();
       conn.unsubscribe();
+      this.finishStats();
     });
   }
 

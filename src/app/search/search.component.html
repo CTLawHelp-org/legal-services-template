@@ -40,6 +40,36 @@
                 </div>
               </div>
             </div>
+            <!--Spelling Suggestions-->
+            <div *ngIf="item.spelling.length > 0" class="pad">
+              <strong>Did you mean: </strong>
+              <span><a [routerLink]="[ '/' + variables.lang + '/search', item.new_key ]"
+                       (click)="remove(index)">{{item.new_key}}</a></span>
+            </div>
+            <!--Triage Search Results-->
+            <div *ngIf="item.search.triage.length > 0" class="pad">
+              <div fxLayout="column" class="highlight border pad">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <app-icon svgClass="svg sm primary icon margin-right" svgIcon="legalhelp"></app-icon>
+                  <h3 class="no-margin"><app-label src="home_lhf"></app-label></h3>
+                </div>
+                <div>
+                  <div class="margin-bottom margin-top">
+                    <app-label src="search_triage"></app-label>
+                  </div>
+                  <div *ngFor="let item of item.search.triage; let last = last;">
+                    <a [routerLink]="[ '/' + variables.lang + '/legal-help/view', item.tid]">
+                      <div><strong [innerHTML]="item.name"></strong></div>
+                    </a>
+                  </div>
+                  <div class="margin-top">
+                    <a [routerLink]="[ '/' + variables.lang + '/legal-help']" mat-raised-button class="primary button">
+                      See More
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
             <!--Search Results-->
             <div class="">
               <!--Segment Display-->
@@ -79,6 +109,7 @@
       <!--Blocks-->
       <div fxFlex="100" fxFlex.gt-sm="30" class="blocks"
            [ngClass]="{'backg1 bg': !media.isMatched('(min-width: 960px)'), 'padding-left border-left': media.isMatched('(min-width: 960px)')}">
+        <app-block [nid]="'86'"></app-block>
         <app-self-help-menu></app-self-help-menu>
       </div>
     </div>

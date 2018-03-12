@@ -1,6 +1,8 @@
 .header {
   z-index:2;
+  position:fixed;
   width:100%;
+  top:0;
   height:56px;
   a.home {
     color:#fff;
@@ -15,6 +17,8 @@
 }
 
 .container {
+  padding-top:56px;
+  min-height:100%;
   position:relative;
 }
 
@@ -24,11 +28,24 @@
   }
 }
 
+.search-fab {
+  position:fixed;
+  bottom:0;
+  right:0;
+  z-index:2;
+  &.searching {
+    left:0;
+    .search-bar {
+      background:rgba(0,0,0,0.35);
+    }
+  }
+}
+
 .sidenav {
   width:330px;
   max-width:98%;
   position:fixed;
-  top:0;
+  top:56px;
   .inner {
 
   }
@@ -46,11 +63,20 @@
 
 // Desktop styles
 @media only screen and (min-width: 960px) {
+  .search-fab {
+    display:none;
+  }
   .header {
     height:64px;
     .logo {
       width:210px;
     }
+  }
+  .container {
+    padding-top:64px;
+  }
+  .sidenav {
+    top:64px;
   }
 }
 

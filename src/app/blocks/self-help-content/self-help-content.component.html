@@ -1,4 +1,35 @@
 <div class="self-help-content" fxLayout="column">
+  <!--Intro Blocks-->
+  <div fxLayout="column">
+    <div *ngIf="term.tid === '570'" class="pad">
+      <!--GovB-->
+      <app-block [nid]="'826'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '569'" class="pad">
+      <!--Consumer-->
+      <app-block [nid]="'825'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '567'" class="pad">
+      <!--Healthcare-->
+      <app-block [nid]="'830'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '571'" class="pad">
+      <!--Housing-->
+      <app-block [nid]="'827'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '563'" class="pad">
+      <!--Nursing-->
+      <app-block [nid]="'828'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '565'" class="pad">
+      <!--Other-->
+      <app-block [nid]="'829'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '572'" class="pad">
+      <!--Powers-->
+      <app-block [nid]="'831'"></app-block>
+    </div>
+  </div>
   <!--Manual List-->
   <div *ngIf="ordered.length > 0" class="margin-bottom border-bottom pad backg3 bg" fxLayout="column">
     <div fxLayout="row" fxLayoutAlign="start start">

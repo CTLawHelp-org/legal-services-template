@@ -4,16 +4,6 @@ Designed to be paired with a [Drupal](https://drupal.org) 8 backend using REST A
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
 
-## Project Credits
-
-This project is funded by Statewide Legal Services of Connecticut [SLSCT](https://www.slsct.org/) with a grant from the Legal Services Corporation’s Technology Initiatives Grant Program [LSC](https://www.lsc.gov/), and with funding from the Connecticut Bar Foundation [CBF](https://www.ctbarfdn.org/).
-
-Project setup inspired by the [Angular Universal Starter](https://github.com/angular/universal-starter) project.
-
-## Drupal Setup
-
-See README in drupal directory
-
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

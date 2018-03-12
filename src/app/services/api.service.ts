@@ -106,6 +106,16 @@ export class ApiService {
     return this.getService(url);
   }
 
+  getOldPaths(): Observable<any> {
+    const url = environment.apiUrl + '/api/v1/oldpaths?_format=json';
+    return this.getService(url);
+  }
+
+  getPopArticles(): Observable<any> {
+    const url = environment.apiUrl + '/api/v1/populararticles?_format=json';
+    return this.getService(url);
+  }
+
   getIcons(): Observable<any> {
     const url = environment.apiUrl + '/api/v1/alltaxonomy/icons?_format=json';
     return this.getService(url);

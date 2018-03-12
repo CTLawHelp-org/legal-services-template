@@ -6,6 +6,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { MatIconRegistry } from '@angular/material';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { Angulartics2 } from 'angulartics2';
 import { MetaService } from '@ngx-meta/core';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -35,6 +36,7 @@ export class SelfHelpComponent implements OnInit, OnDestroy {
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
     private breakpointObserver: BreakpointObserver,
+    private angulartics2: Angulartics2,
     private meta: MetaService,
     @Inject(DOCUMENT) private document: any,
     @Inject(PLATFORM_ID) private platformId,
@@ -119,6 +121,7 @@ export class SelfHelpComponent implements OnInit, OnDestroy {
   }
 
   doneLoading() {
+    this.angulartics2.pageTrack.next({ path: this.router.url });
     this.connection.unsubscribe();
     this.working = false;
   }

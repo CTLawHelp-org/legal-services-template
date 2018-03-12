@@ -5,6 +5,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule, HttpClientXsrfModule } from '@angular/common/http';
 import { environment } from './../environments/environment';
+import { AsyncLocalStorageModule } from 'angular-async-local-storage';
+import { Angulartics2GoogleAnalytics } from 'angulartics2/ga';
+import { Angulartics2Module } from 'angulartics2';
 import { MetaModule } from '@ngx-meta/core';
 import { PrebootModule } from 'preboot';
 
@@ -30,16 +33,21 @@ import { TriageSummaryComponent } from './triage/triage-summary/triage-summary.c
 import { BlockComponent } from './core/block/block.component';
 import { SelfHelpLandingComponent } from './blocks/self-help-landing/self-help-landing.component';
 import { SelfHelpComponent } from './self-help/self-help.component';
+import { PopularArticlesComponent } from './blocks/popular-articles/popular-articles.component';
 import { FooterMenuComponent } from './core/footer-menu/footer-menu.component';
 import { SelfHelpMenuComponent } from './blocks/self-help-menu/self-help-menu.component';
+import { FeaturedSliderModule } from './blocks/featured-slider/featured-slider.module';
 import { SelfHelpContentComponent } from './blocks/self-help-content/self-help-content.component';
 import { SegmentsComponent } from './core/segments/segments.component';
 import { SearchComponent } from './search/search.component';
 import { TriageLocationComponent } from './triage/triage-location/triage-location.component';
 import { TriageDialogComponent } from './triage/triage-dialog/triage-dialog.component';
+import { ArticleCreditComponent } from './blocks/article-credit/article-credit.component';
+import { ShareComponent, ShareDialogComponent } from './core/share/share.component';
 import { TriageSaveComponent, TriageSaveDialogComponent } from './triage/triage-save/triage-save.component';
 import { TriageLoadComponent } from './triage/triage-load/triage-load.component';
 import { MinRouterComponent } from './min-router/min-router.component';
+import { PdfDownloadComponent, PdfDownloadDialogComponent } from './core/pdf-download/pdf-download.component';
 import { LoaderComponent } from './core/loader/loader.component';
 import { ContentListComponent, ContentListDialogComponent } from './core/content-list/content-list.component';
 import { SegmentDisplayComponent } from './core/segment-display/segment-display.component';
@@ -68,6 +76,7 @@ import { NodeTopComponent } from './core/node-top/node-top.component';
     BlockComponent,
     SelfHelpLandingComponent,
     SelfHelpComponent,
+    PopularArticlesComponent,
     FooterMenuComponent,
     SelfHelpMenuComponent,
     SelfHelpContentComponent,
@@ -75,11 +84,16 @@ import { NodeTopComponent } from './core/node-top/node-top.component';
     SearchComponent,
     TriageLocationComponent,
     TriageDialogComponent,
+    ArticleCreditComponent,
+    ShareComponent,
+    ShareDialogComponent,
     TriageSaveComponent,
     TriageSaveDialogComponent,
     TriageLoadComponent,
     MinRouterComponent,
     LoaderComponent,
+    PdfDownloadComponent,
+    PdfDownloadDialogComponent,
     ContentListComponent,
     ContentListDialogComponent,
     SegmentDisplayComponent,
@@ -90,7 +104,9 @@ import { NodeTopComponent } from './core/node-top/node-top.component';
   ],
   entryComponents: [
     TriageDialogComponent,
+    ShareDialogComponent,
     TriageSaveDialogComponent,
+    PdfDownloadDialogComponent,
     ContentListDialogComponent,
   ],
   imports: [
@@ -103,6 +119,13 @@ import { NodeTopComponent } from './core/node-top/node-top.component';
     HttpClientModule,
     HttpClientXsrfModule,
     AppRoutingModule,
+    AsyncLocalStorageModule,
+    FeaturedSliderModule,
+    Angulartics2Module.forRoot([Angulartics2GoogleAnalytics], {
+      pageTracking: {
+        autoTrackVirtualPages: false
+      }
+    }),
     MetaModule.forRoot(),
     BrowserTransferStateModule,
   ],

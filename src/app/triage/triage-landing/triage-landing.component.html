@@ -58,6 +58,9 @@
       </div>
       <div *ngIf="state === '0'" fxLayout="column" fxLayoutAlign="center center">
         <div class="pad">
+          <app-block [nid]="'797'"></app-block>
+        </div>
+        <div class="pad">
           <button (click)="reset()" mat-raised-button class="primary button" appHighlight>Back</button>
         </div>
       </div>

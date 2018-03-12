@@ -6,6 +6,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatIconRegistry } from '@angular/material';
 import { isPlatformBrowser, Location } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Angulartics2 } from 'angulartics2';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -48,6 +49,7 @@ export class TriageSummaryComponent implements OnInit {
     private sanitizer: DomSanitizer,
     @Inject(PLATFORM_ID) private platformId,
     private location: Location,
+    private angulartics2: Angulartics2
   ) {
     this.media = breakpointObserver;
     iconRegistry.addSvgIcon(
@@ -71,6 +73,7 @@ export class TriageSummaryComponent implements OnInit {
       this.user_loc = result;
       this.issues = [];
       this.doneUpdating([]);
+      this.sendStats();
     });
 
     this.variableService.statusSubject.subscribe(result => {
@@ -102,6 +105,7 @@ export class TriageSummaryComponent implements OnInit {
           self.currentIdx = index;
         }
       });
+      this.sendStats();
     }
     this.working = false;
   }
@@ -115,6 +119,47 @@ export class TriageSummaryComponent implements OnInit {
     } else {
       this.issues = this.saved_issues;
       this.working = false;
+    }
+  }
+
+  sendStats() {
+    if (this.issues.length > 0) {
+      const last = this.issues[this.currentIdx].issues.length - 1;
+      const content_dem = [];
+      this.showEntry(this.issues[this.currentIdx]);
+      // issue
+      const issue_dem = [];
+      this.issues[this.currentIdx].issues.forEach(function (i, index) {
+        issue_dem.push(i.tid);
+        if (last === index) {
+          // content
+          i.term_export.field_entry_settings.forEach(function (entry) {
+            if (entry.hide === false || typeof entry.hide === 'undefined') {
+              content_dem.push(entry.target_id);
+            }
+          });
+        }
+      });
+      // status
+      const status_dem = [];
+      this.user_status.forEach(function (i) {
+        status_dem.push(i);
+      });
+      // location
+      let loc_dem = [this.user_loc.county, this.user_loc.city, this.user_loc.zipcode];
+      loc_dem = loc_dem.filter(n => n);
+      // build and send
+      const props = {};
+      props['dimension5'] = issue_dem.join(';');
+      props['dimension6'] = status_dem.join(';');
+      props['dimension7'] = loc_dem.join(';');
+      props['dimension8'] = content_dem.join(';');
+      props['category'] = 'triage';
+      props['value'] = 1;
+      this.angulartics2.eventTrack.next({
+        action: 'viewTriage',
+        properties: props
+      });
     }
   }
 
