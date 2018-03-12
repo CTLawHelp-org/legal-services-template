@@ -1,0 +1,22 @@
+.self-help-landing {
+  padding-bottom:8px;
+  .item-wrapper {
+    a {
+      text-decoration: none;
+      .desc {
+        color:#333;
+      }
+    }
+    .entry {
+      min-height:100%;
+    }
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .self-help-landing {
+    .item-wrapper {
+      padding:8px;
+    }
+  }
+}

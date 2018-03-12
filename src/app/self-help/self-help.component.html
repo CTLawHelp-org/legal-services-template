@@ -1,0 +1,118 @@
+<div fxLayout="column" class="self-help">
+  <div *ngIf="working">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!working" fxLayout="row wrap" fxLayoutAlign="space-between start">
+    <!-- Left -->
+    <div fxFlex="100" fxFlex.gt-sm="30" fxLayout="column">
+      <div class="pad">
+        <div class="crumb">
+          <a [routerLink]="[ '/self-help' ]">
+            <app-label src="selfhelp_title"></app-label>
+          </a>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <app-icon *ngIf="term.term_export.field_term_file.length > 0"
+                    svgClass="svg lg" svgIcon="tid{{term.tid}}"></app-icon>
+          <h1 fxHide fxShow.gt-sm class="no-margin">
+            <div *ngIf="variables.lang === 'en'">
+              <span [innerHTML]="term.name"></span>
+            </div>
+            <div *ngIf="variables.lang === 'es'">
+              <span [innerHTML]="term.i18n['es'].name[0].value"></span>
+            </div>
+          </h1>
+          <h2 fxHide.gt-sm class="no-margin">
+            <div *ngIf="variables.lang === 'en'">
+              <span [innerHTML]="term.name"></span>
+            </div>
+            <div *ngIf="variables.lang === 'es'">
+              <span [innerHTML]="term.i18n['es'].name[0].value"></span>
+            </div>
+          </h2>
+        </div>
+      </div>
+      <div class="pad">
+        <div class="pad backg1 bg">
+          <div *ngIf="variables.lang === 'en'">
+            <div [innerHTML]="term.term_export.description[0].value"></div>
+          </div>
+          <div *ngIf="variables.lang === 'es'">
+            <div [innerHTML]="term.i18n['es'].description[0].value"></div>
+          </div>
+        </div>
+      </div>
+      <div fxHide fxShow.gt-sm class="pad">
+        <app-block [nid]="'86'"></app-block>
+        <app-block *ngIf="term.tid === '537'" [nid]="'824'"></app-block>
+        <app-block *ngIf="term.tid === '535'" [nid]="'815'"></app-block>
+      </div>
+    </div>
+    <!-- Right -->
+    <div fxFlex="100" fxFlex.gt-sm="70" fxLayout="column">
+      <div *ngIf="term.tid === '537'" class="pad">
+        <app-block [nid]="'823'"></app-block>
+      </div>
+      <div class="pad">
+        <div class="pad mat-elevation-z1">
+          <!-- Terms and Content -->
+          <div *ngIf="term.children.length > 0">
+            <div *ngFor="let item of term.children; let last = last;" fxLayout="column">
+              <div *ngIf="variables.lang === 'en' && item.content_en > 0" [ngClass]="{'margin-bottom-lg': !last}" fxLayout="column">
+                <!--Term Button-->
+                <button mat-button class="primary bg term-item" [ngClass]="{'active': item.show}"
+                        appHighlight (click)="showContent(item)">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex>
+                      <h3 class="no-margin" [innerHTML]="item.term_export.name[0].value"></h3>
+                    </div>
+                    <mat-icon class="expand">expand_more</mat-icon>
+                  </div>
+                </button>
+                <!-- Content -->
+                <div *ngIf="item.content?.length > 0 && isBrowser" [fxHide]="!item.show" class="content-wrapper"
+                     [ngClass]="{'pad': media.isMatched('(min-width: 960px)')}">
+                  <app-self-help-content [src]="item.content" [term]="item"></app-self-help-content>
+                </div>
+                <div *ngIf="item.content?.length > 0 && !isBrowser" class="content-wrapper"
+                     [ngClass]="{'pad': media.isMatched('(min-width: 960px)')}">
+                  <app-self-help-content [src]="item.content" [term]="item"></app-self-help-content>
+                </div>
+              </div>
+              <div *ngIf="variables.lang === 'es' && item.content_es > 0" [ngClass]="{'margin-bottom-lg': !last}" fxLayout="column">
+                <!--Term Button-->
+                <button mat-button class="primary bg term-item" [ngClass]="{'active': item.show}"
+                        appHighlight (click)="showContent(item)">
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <div fxFlex>
+                      <h3 class="no-margin" [innerHTML]="item.i18n.es.name[0].value"></h3>
+                    </div>
+                    <mat-icon class="expand">expand_more</mat-icon>
+                  </div>
+                </button>
+                <!-- Content -->
+                <div *ngIf="item.content?.length > 0 && isBrowser" [fxHide]="!item.show" class="content-wrapper"
+                     [ngClass]="{'pad': media.isMatched('(min-width: 960px)')}">
+                  <app-self-help-content [src]="item.content" [term]="item"></app-self-help-content>
+                </div>
+                <div *ngIf="item.content?.length > 0 && !isBrowser" class="content-wrapper"
+                     [ngClass]="{'pad': media.isMatched('(min-width: 960px)')}">
+                  <app-self-help-content [src]="item.content" [term]="item"></app-self-help-content>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Content -->
+          <div *ngIf="term.content?.length > 0" class="content-wrapper margin-top" [ngClass]="{'pad': media.isMatched('(min-width: 960px)')}">
+            <app-self-help-content [src]="term.content" [term]="term"></app-self-help-content>
+          </div>
+        </div>
+      </div>
+      <div fxHide.gt-sm class="pad backg1 bg">
+        <app-block [nid]="'86'"></app-block>
+        <app-block *ngIf="term.tid === '537'" [nid]="'824'"></app-block>
+        <app-block *ngIf="term.tid === '535'" [nid]="'815'"></app-block>
+      </div>
+    </div>
+  </div>
+</div>

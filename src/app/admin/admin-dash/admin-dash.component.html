@@ -1,0 +1,27 @@
+<div fxLayout="column">
+  <div *ngIf="working">
+    <app-admin-loader></app-admin-loader>
+  </div>
+  <div *ngIf="!working" class="aquabg bg">
+    <div class="admin-menu-bar pad" fxLayout="row" fxLayoutAlign="start center">
+      <div class="pad" fxLayout="column" fxLayoutAlign="center center">
+        <div><h4 class="no-margin">{{variables.adminTitle}}</h4></div>
+      </div>
+      <div fxFlex></div>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <button mat-button [routerLink]="['labels']" class="button">Manage Labels</button>
+      </div>
+      <div fxLayout="column" fxLayoutAlign="center center">
+        <mat-menu #contentMenu="matMenu">
+          <button mat-menu-item [routerLink]="['blocks']" class="button">Blocks</button>
+        </mat-menu>
+        <button mat-button class="button" [matMenuTriggerFor]="contentMenu">
+          Content
+        </button>
+      </div>
+    </div>
+    <div class="pad-r whitebg bg">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

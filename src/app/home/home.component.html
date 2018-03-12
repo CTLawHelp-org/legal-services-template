@@ -1,0 +1,65 @@
+<div fxLayout="column" class="home-wrapper">
+  <h1 class="hidden">{{title}}</h1>
+  <div *ngIf="working">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!working">
+    <div fxLayout="row wrap" fxLayoutAlign="start stretch" class="padding-bottom backg1 bg">
+      <div fxFlex="100" fxFlex.gt-md="70" fxFlexOrder.gt-md="2">
+        <div fxLayout="column">
+          <app-featured-slider></app-featured-slider>
+        </div>
+      </div>
+      <div fxFlex="100" fxFlex.gt-md="30" fxFlexOrder.gt-md="1">
+        <div class="home-button-wrapper" fxLayout="row wrap" fxLayoutAlign="space-between center"
+             fxLayout.gt-md="column" fxLayoutAlign.gt-md="space-between none" fxFill>
+          <div fxFlex.xs="100" fxLayout="column" class="home-button-pad">
+            <a mat-raised-button class="primary button home-button" appHighlight
+               [routerLink]="'/' + variables.lang + '/self-help'">
+              <div fxLayout="row" fxLayoutAlign="center center">
+                <app-icon svgClass="svg md" svgIcon="selfhelp"></app-icon>
+                <div class="margin-left">
+                  <app-label src="home_self_help"></app-label>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div fxFlex.xs="100" fxLayout="column" class="home-button-pad">
+            <a mat-raised-button class="primary button home-button" appHighlight
+               [routerLink]="'/' + variables.lang + '/legal-help'">
+              <div fxLayout="row" fxLayoutAlign="center center">
+                <app-icon svgClass="svg md" svgIcon="legalhelp"></app-icon>
+                <div class="margin-left">
+                  <app-label src="home_lhf"></app-label>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div fxFlex.xs="100" fxLayout="column" class="home-button-pad">
+            <a mat-raised-button class="primary button home-button" appHighlight
+               [routerLink]="[ '/' + variables.lang + '/node/793' ]">
+              <div fxLayout="row" fxLayoutAlign="center center">
+                <app-icon svgClass="svg md" svgIcon="probono"></app-icon>
+                <div class="margin-left">
+                  <app-label src="home_legal_pros"></app-label>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="space-between stretch" class="backg1 bg">
+      <div fxFlex="100" fxFlex.gt-sm="32" class="whitebg bg">
+        <app-block [nid]="'803'"></app-block>
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="33" fxLayout="column" class="whitebg bg"
+           ngClass="border-top border-bottom" [ngClass.gt-sm]="{'border-top border-bottom': false}">
+        <app-block [nid]="'769'"></app-block>
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="33" fxLayout="column" class="whitebg bg">
+        <app-block [nid]="'794'"></app-block>
+      </div>
+    </div>
+  </div>
+</div>

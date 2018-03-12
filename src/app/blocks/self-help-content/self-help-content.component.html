@@ -1,0 +1,69 @@
+<div class="self-help-content" fxLayout="column">
+  <!--Intro Blocks-->
+  <div fxLayout="column">
+    <div *ngIf="term.tid === '570'" class="pad">
+      <!--GovB-->
+      <app-block [nid]="'826'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '569'" class="pad">
+      <!--Consumer-->
+      <app-block [nid]="'825'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '567'" class="pad">
+      <!--Healthcare-->
+      <app-block [nid]="'830'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '571'" class="pad">
+      <!--Housing-->
+      <app-block [nid]="'827'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '563'" class="pad">
+      <!--Nursing-->
+      <app-block [nid]="'828'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '565'" class="pad">
+      <!--Other-->
+      <app-block [nid]="'829'"></app-block>
+    </div>
+    <div *ngIf="term.tid === '572'" class="pad">
+      <!--Powers-->
+      <app-block [nid]="'831'"></app-block>
+    </div>
+  </div>
+  <!--Manual List-->
+  <div *ngIf="ordered.length > 0" class="margin-bottom border-bottom pad backg3 bg" fxLayout="column">
+    <div fxLayout="row" fxLayoutAlign="start start">
+      <div class="pad-sm"><app-icon svgClass="svg xs backg icon" svgIcon="pin"></app-icon></div>
+    </div>
+    <div>
+      <div *ngFor="let item of ordered; let last = last;">
+        <div *ngIf="show(item)" class="item pad" [ngClass]="{'margin-bottom': !last}">
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <app-content-list fxFlex [node]="[item]" preview="true"></app-content-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Automated List-->
+  <div class="main-list">
+    <div *ngIf="variables.lang === 'en'">
+      <div *ngFor="let item of content_en; let index = index; let last = last; let odd = odd;" class="main-list-item">
+        <div class="item pad" [ngClass]="{'margin-bottom': !last, 'backg1 bg': odd}">
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <app-content-list fxFlex [node]="[item]" preview="true"></app-content-list>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="variables.lang === 'es'">
+      <div *ngFor="let item of content_es; let index = index; let last = last; let odd = odd;" class="main-list-item">
+        <div class="item pad" [ngClass]="{'margin-bottom': !last, 'backg1 bg': odd}">
+          <div fxLayout="row" fxLayoutAlign="start start">
+            <app-content-list fxFlex [node]="[item]" preview="true"></app-content-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

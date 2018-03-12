@@ -1,0 +1,87 @@
+<div fxLayout="column" class="node-wrapper">
+  <div *ngIf="curNode.length > 0 && !working" [@contentAnimation]="curNode.length" fxLayout="column">
+    <div id="curnode">
+      <!--Copy / Credit-->
+      <div *ngIf="curNode[0].node_export.type[0].target_id !== 'block'" fxLayout="row wrap">
+        <div fxFlex *ngIf="variables.lang === 'en'">
+          <div fxLayout="row wrap" fxLayoutAlign="start center" class="content-pad-r">
+            <div *ngIf="curNode[0].node_export.field_copyright?.length > 0" fxLayout="row wrap" fxLayoutAlign="start center">
+              <mat-icon class="margin-right">update</mat-icon>
+              <div><strong>{{curNode[0].node_export.field_copyright[0].value}}</strong></div>
+              <div *ngIf="showCredit()" fxHide fxShow.gt-sm class="pad">-</div>
+            </div>
+            <app-article-credit *ngIf="showCredit()" fxFlex="100" fxFlex.gt-sm="auto"></app-article-credit>
+          </div>
+        </div>
+        <div fxFlex *ngIf="variables.lang === 'es'">
+          <div fxLayout="row wrap" fxLayoutAlign="start center" class="content-pad-r">
+            <div *ngIf="curNode[0].node_export.i18n.es.field_copyright?.length > 0" fxLayout="row wrap" fxLayoutAlign="start center">
+              <mat-icon class="margin-right">update</mat-icon>
+              <div><strong>{{curNode[0].node_export.i18n['es'].field_copyright[0].value}}</strong></div>
+              <div *ngIf="showCredit()" fxHide fxShow.gt-sm class="pad">-</div>
+            </div>
+            <app-article-credit *ngIf="showCredit()" fxFlex="100" fxFlex.gt-sm="auto"></app-article-credit>
+          </div>
+        </div>
+        <!--Admin and Node Actions-->
+        <div *ngIf="curNode[0].node_export.field_type[0].target_id !== '9'"
+             fxLayout="row" fxLayoutAlign="end center" class="node-buttons padding-right">
+          <!--Node Admin-->
+          <div *ngIf="variables.auth" class="node-admin">
+            <button mat-icon-button mat-raised-button [matMenuTriggerFor]="menu" aria-label="Node Menu">
+              <mat-icon>more_horiz</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <a mat-menu-item [href]="adminUrl" target="_blank">Edit</a>
+            </mat-menu>
+          </div>
+          <!--Node Actions-->
+          <div class="node-actions" fxLayout="row" fxLayoutAlign="end start">
+            <div fxHide fxShow.gt-sm class="margin-left">
+              <button mat-icon-button mat-raised-button class="min" (click)="print()">
+                <app-icon svgClass="svg sm" svgIcon="print"></app-icon>
+              </button>
+            </div>
+            <div *ngIf="isBrowser" class="margin-left">
+              <app-pdf-download [curNode]="curNode"></app-pdf-download>
+            </div>
+            <app-share [curNode]="curNode" class="margin-left"></app-share>
+          </div>
+        </div>
+      </div>
+      <!--Page Body-->
+      <div *ngIf="curNode[0].node_export.type[0].target_id !== 'block'">
+        <div *ngIf="variables.lang === 'en'">
+          <div *ngIf="curNode[0].node_export.body.length > 0 && curNode[0].node_export.body[0].value !== ''"
+               class="content-pad-r">
+            <div [innerHTML]="curNode[0].node_export.body[0].value | safeHtml"></div>
+          </div>
+        </div>
+        <div *ngIf="variables.lang === 'es'">
+          <div *ngIf="curNode[0].node_export.i18n['es'].body.length > 0 && curNode[0].node_export.i18n['es'].body[0].value !== ''"
+               class="content-pad-r">
+            <div [innerHTML]="curNode[0].node_export.i18n['es'].body[0].value | safeHtml"></div>
+          </div>
+        </div>
+      </div>
+      <!--Block Body-->
+      <div *ngIf="curNode[0].node_export.type[0].target_id === 'block'">
+        <div *ngIf="variables.lang === 'en'">
+          <div *ngIf="curNode[0].node_export.body.length > 0" class="pad">
+            <div [innerHTML]="curNode[0].node_export.body[0].value | safeHtml"></div>
+          </div>
+        </div>
+        <div *ngIf="variables.lang === 'es'">
+          <div *ngIf="curNode[0].node_export.i18n['es'].body.length > 0" class="pad">
+            <div [innerHTML]="curNode[0].node_export.i18n['es'].body[0].value | safeHtml"></div>
+          </div>
+        </div>
+      </div>
+      <!--Segments-->
+      <div *ngIf="curNode[0].node_export.field_segments?.length > 0 && curNode[0].node_export.field_type?.length > 0"
+           class="content-pad-r">
+        <app-segments [src]="curNode[0].node_export.field_segments" [type]="curNode[0].node_export.field_type[0].target_id"></app-segments>
+      </div>
+    </div>
+  </div>
+</div>

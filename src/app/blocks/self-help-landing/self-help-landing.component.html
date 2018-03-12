@@ -1,0 +1,35 @@
+<div class="self-help-landing">
+  <div *ngIf="working">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!working" fxLayout="row wrap" fxLayoutAlign="start stretch">
+    <div fxFlex="100" fxFlex.gt-sm="50" fxLayout="column" *ngFor="let item of nsmi" class="item-wrapper">
+      <a [routerLink]="[ '/' + variables.lang + '/self-help', item.tid ]">
+        <div fxLayout="column" class="pad mat-elevation-z1 backg1 border-lg entry">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <app-icon *ngIf="item.term_export.field_term_file.length > 0"
+                      svgClass="margin-right svg md" svgIcon="tid{{item.id}}"></app-icon>
+            <div fxFlex>
+              <h2 class="no-margin">
+                <div *ngIf="variables.lang === 'en'">
+                  <span [innerHTML]="item.name"></span>
+                </div>
+                <div *ngIf="variables.lang === 'es'">
+                  <span [innerHTML]="item.i18n['es'].name[0].value"></span>
+                </div>
+              </h2>
+            </div>
+          </div>
+          <div class="desc">
+            <div *ngIf="variables.lang === 'en'">
+              <div [innerHTML]="item.term_export.description[0].value"></div>
+            </div>
+            <div *ngIf="variables.lang === 'es'">
+              <div [innerHTML]="item.i18n['es'].description[0].value"></div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>

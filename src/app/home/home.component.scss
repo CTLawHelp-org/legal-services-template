@@ -1,0 +1,31 @@
+.home-wrapper {
+  h1.hidden {
+    visibility: hidden;
+    display:none;
+  }
+  .home-button-pad {
+    padding:4px 8px;
+  }
+}
+
+@media only screen and (min-width: 960px) {
+  .home-wrapper {
+    .home-button-wrapper {
+      padding:16px 0;
+    }
+    .home-button-pad {
+      padding:4px;
+    }
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  .home-wrapper {
+    .home-button-wrapper {
+      padding:8px 0 0;
+    }
+    .home-button-pad {
+      padding:8px;
+    }
+  }
+}
