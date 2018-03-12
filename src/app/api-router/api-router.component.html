@@ -4,54 +4,10 @@
   </div>
   <div *ngIf="!working" fxLayout="column">
     <div fxLayout="row wrap">
-      <!-- Left -->
-      <div *ngIf="node.length > 0 && node[0].nid === '820'" class="left" fxFlex="100" fxFlex.gt-sm="30" fxFlexOrder="2" fxFlexOrder.gt-sm="1"
-           [ngClass]="{'backg1 bg': !media.isMatched('(min-width: 960px)'), 'padding-right border-right': media.isMatched('(min-width: 960px)')}">
-        <app-block [nid]="'821'"></app-block>
-      </div>
       <!-- Content -->
-      <div *ngIf="node.length > 0" class="content" fxFlex="100" fxFlex.gt-sm fxFlexOrder="1" fxFlexOrder.gt-sm="2" fxLayout="column">
+      <div *ngIf="node.length > 0" class="content" fxFlex="100" fxLayout="column">
         <app-node-top [curNode]="node"></app-node-top>
-        <!--Content Top Blocks (Advocates)-->
-        <div *ngIf="node[0].node_export.nid[0].value === '820'"
-             fxLayout="row wrap" fxLayoutAlign="space-between stretch" class="highlight bg margin-top" ngClass.gt-sm="pad">
-          <div fxFlex="100" fxFlex.gt-sm="33" class="pad" fxLayout="column">
-            <app-block [nid]="'861'" class="mat-elevation-z2 whitebg bg"></app-block>
-          </div>
-          <div fxFlex="100" fxFlex.gt-sm="33" class="pad" fxLayout="column">
-            <app-block [nid]="'862'" class="mat-elevation-z2 whitebg bg"></app-block>
-          </div>
-          <div fxFlex="100" fxFlex.gt-sm="33" class="pad" fxLayout="column">
-            <app-block [nid]="'863'" class="mat-elevation-z2 whitebg bg"></app-block>
-          </div>
-        </div>
         <app-node [curNode]="node"></app-node>
-        <!--Self-Help Landing-->
-        <div *ngIf="node[0].nid === '514'">
-          <app-self-help-landing></app-self-help-landing>
-        </div>
-        <!--Content Bottom Blocks-->
-        <div *ngIf="node[0].nid !== '514' && (node[0].node_export.field_type[0].target_id !== '9' && node[0].node_export.field_type[0].target_id !== '6')"
-             class="border-top hide-print">
-          <!--Article Feedback-->
-          <app-block [nid]="'771'"></app-block>
-        </div>
-        <!--Guide Content Bottom (Right sidebar blocks)-->
-        <div *ngIf="node[0].nid !== '514' && node[0].node_export.field_type[0].target_id === '6'"
-             class="border-top-lg backg1 bg hide-print" fxLayout="row wrap" fxLayoutAlign="space-between stretch">
-          <app-block fxFlex="100" fxFlex.gt-sm="33" [nid]="'771'" class="whitebg bg"></app-block>
-          <app-block fxFlex="100" fxFlex.gt-sm="33" [nid]="'86'" ngClass.gt-sm="whitebg bg"></app-block>
-          <app-block fxFlex="100" fxFlex.gt-sm="33" [nid]="'815'" ngClass.gt-sm="whitebg bg"></app-block>
-        </div>
-      </div>
-      <!-- Right -->
-      <div fxFlex="100" fxFlex.gt-sm="30" fxFlexOrder="3" fxFlexOrder.gt-sm="3" class="right"
-           *ngIf="node.length > 0 && node[0].node_export.type[0].target_id === 'page' && node[0].nid !== '820' && node[0].node_export.field_type[0].target_id !== '6'"
-           [ngClass]="{'backg1 bg': !media.isMatched('(min-width: 960px)'), 'padding-left border-left': media.isMatched('(min-width: 960px)')}">
-        <app-block [nid]="'86'"></app-block>
-        <app-block *ngIf="isValidNode()" [nid]="'859'"></app-block>
-        <app-self-help-menu *ngIf="node[0].nid !== '514'"></app-self-help-menu>
-        <app-block [nid]="'815'"></app-block>
       </div>
     </div>
   </div>

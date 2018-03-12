@@ -1,4 +1,4 @@
-<div class="container custom-typography">
+<div class="container custom-typography" fxLayout="column">
   <mat-toolbar class="header mat-elevation-z3">
     <div *ngIf="!working" class="max-width-layout" fxLayout="row" fxLayoutAlign="start center">
       <mat-icon fxHide fxShow.xs fxShow.sm (click)="sidenav.toggle()" class="margin-right menu-icon">menu</mat-icon>
@@ -18,7 +18,7 @@
       <app-lang-select></app-lang-select>
     </div>
   </mat-toolbar>
-  <mat-sidenav-container class="sidenav-container" fxFlex>
+  <mat-sidenav-container class="sidenav-container">
     <mat-sidenav class="sidenav" #sidenav>
       <div *ngIf="!working" class="inner pad">
         <app-side-menu (nav)="sidenav.close()"></app-side-menu>
