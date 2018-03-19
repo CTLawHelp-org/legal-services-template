@@ -1,0 +1,5 @@
+name: Rest Extras
+description: ‘Custom actions (post hooks) for Rest API'
+type: module
+core: 8.x
+

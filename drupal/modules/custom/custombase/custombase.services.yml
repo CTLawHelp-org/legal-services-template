@@ -1,0 +1,6 @@
+services:
+  serializer.normalizer.entity_reference_item.custombase:
+    class: Drupal\custombase\Normalizer\ValuePairItemNormalizer
+    arguments: ['@hal.link_manager', '@serializer.entity_resolver']
+    tags:
+      - { name: normalizer, priority: 10 }

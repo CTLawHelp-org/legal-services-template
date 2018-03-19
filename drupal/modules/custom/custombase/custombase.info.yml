@@ -1,0 +1,4 @@
+name: CTLawHelp Custom REST API Functions
+description: 'Core REST API functions for Drupal 8'
+type: module
+core: 8.x

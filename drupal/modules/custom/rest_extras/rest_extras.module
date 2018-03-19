@@ -1,0 +1,70 @@
+<?php
+
+/**
+ * @file
+ * Contains rest_extras.module.
+ */
+
+use Drupal\node\Entity\Node;
+
+function rest_extras_node_presave($node) {
+  if ($node->bundle() === 'page' || $node->bundle() === 'segment' || $node->bundle() === 'triage_entry' || $node->bundle() === 'block') {
+    if ($node->langcode->value === 'en' && $node->getRevisionId() !== NULL) {
+      // enforce new revisions to be created over REST API
+      $node->setNewRevision(TRUE);
+      $node->setRevisionCreationTime(time());
+    }
+  }
+}
+ 
+function rest_extras_node_insert($node) {
+  if ($node->bundle() === 'page' || $node->bundle() === 'segment' || $node->bundle() === 'triage_entry' || $node->bundle() === 'block') {
+    if ($node->langcode->value === 'en') {
+      $nodeObj = $node->load($node->id());
+      // create i18n
+			$node_es = $nodeObj->addTranslation('es');
+			$node_es->title = $nodeObj->title;
+			$node_es->save();
+  	}
+  }
+}
+
+function rest_extras_node_update($node) {
+  if ($node->bundle() === 'page' || $node->bundle() === 'segment' || $node->bundle() === 'triage_entry' || $node->bundle() === 'block') {
+    if ($node->langcode->value === 'en') {
+      $nodeObj = $node->load($node->id());
+      if (!$nodeObj->hasTranslation('es')) {
+        // create i18n
+        $node_es = $nodeObj->addTranslation('es');
+        $node_es->title = $nodeObj->title;
+        $node_es->save();
+      }
+  	}
+  }
+}
+
+function rest_extras_taxonomy_term_insert($term) {
+  if ($term->bundle() === 'triage' || $term->bundle() === 'nsmi' || $term->bundle() === 'section') {
+    if ($term->langcode->value === 'en') {
+      $termObj = $term->load($term->id());
+      // create i18n
+			$term_es = $termObj->addTranslation('es');
+			$term_es->name = $termObj->name;
+			$term_es->save();
+    }
+  }
+}
+
+function rest_extras_taxonomy_term_update($term) {
+  if ($term->bundle() === 'triage' || $term->bundle() === 'nsmi' || $term->bundle() === 'section') {
+    if ($term->langcode->value === 'en') {
+      $termObj = $term->load($term->id());
+      if (!$termObj->hasTranslation('es')) {
+        // create i18n
+        $term_es = $termObj->addTranslation('es');
+        $term_es->name = $termObj->name;
+        $term_es->save();
+      }
+    }
+  }
+}

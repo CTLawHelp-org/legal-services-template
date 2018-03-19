@@ -1,0 +1,5 @@
+<?php
+
+function file_perms_entity_type_alter(array &$entity_types) {
+  $entity_types['file']->setAccessClass('Drupal\file_perms\FileAccessControlHandler');
+}
