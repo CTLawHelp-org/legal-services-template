@@ -40,7 +40,7 @@ export class VariableService {
     private meta: MetaService
   ) {
     // set defaults
-    this.site_title = 'CTLawHelp.org';
+    this.site_title = 'Legal Services Template';
     this.isBrowser = isPlatformBrowser(platformId);
     const self = this;
     const types = this.apiService.getPageTypes();
