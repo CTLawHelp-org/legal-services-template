@@ -1,0 +1,37 @@
+.node-wrapper {
+  .crumb {
+    a {
+      text-decoration:none;
+      &:hover {
+        text-decoration:none;
+      }
+    }
+  }
+  .node-actions {
+
+  }
+  .mobile-title {  // temp?
+    font-size:26px;
+    line-height:28px;
+  }
+}
+
+// Print styles
+@media only print {
+  .node-wrapper {
+    page-break-inside: avoid;
+    page-break-after: avoid;
+    page-break-before: avoid;
+    padding:16px;
+    line-height:30px;
+    overflow-y: visible;
+    .crumb, .node-admin, .node-actions, .hide-print {
+      display:none !important;
+    }
+  }
+  table tr {
+    page-break-inside: avoid;
+    page-break-after: avoid;
+    page-break-before: avoid;
+  }
+}

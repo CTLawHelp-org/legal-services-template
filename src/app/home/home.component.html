@@ -1,0 +1,7 @@
+<div fxLayout="column" class="home-wrapper">
+  <h1 class="hidden">{{title}}</h1>
+  <div *ngIf="working">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!working"></div>
+</div>

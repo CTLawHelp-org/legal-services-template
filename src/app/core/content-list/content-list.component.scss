@@ -1,0 +1,29 @@
+.mat-dialog-title.dialog-header {
+  color:#fff;
+  margin:0;
+  .icon {
+    .mat-icon {
+      color:#fff;
+    }
+  }
+  .node-actions {
+    .mat-icon {
+      color:#fff !important;
+    }
+  }
+}
+
+.dialog-node {
+  .crumb, .node-buttons {
+    display:none !important;
+  }
+}
+
+.triage-wrapper {
+  a {
+    text-decoration:none;
+    &:hover {
+      text-decoration:underline;
+    }
+  }
+}

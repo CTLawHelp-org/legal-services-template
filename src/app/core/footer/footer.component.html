@@ -1,0 +1,10 @@
+<div class="footer-wrapper" [ngClass]="{'editing': variables.labelEdit}">
+  <div class="max-width-layout">
+    <div class="footer pad" fxLayout="row wrap" fxLayoutAlign="start start">
+
+    </div>
+    <div *ngIf="variables.auth && variables.labelEdit" class="admin-inline-wrapper aquabg bg pad-lg">
+      <app-label-editor></app-label-editor>
+    </div>
+  </div>
+</div>

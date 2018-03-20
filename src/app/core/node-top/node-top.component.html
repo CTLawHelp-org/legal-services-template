@@ -1,0 +1,42 @@
+<div fxLayout="column" class="node-top-wrapper">
+  <div *ngIf="curNode.length > 0 && !working" fxLayout="column">
+    <!--Crumb-->
+    <div *ngIf="showCrumb()" fxLayout="row" fxLayoutAlign="start stretch" class="crumb border-bottom">
+      <div fxFlex fxLayout="column" fxLayoutAlign="center stretch">
+        <div fxLayout="row" fxLayoutAlign="start center" class="pad crumb-link">
+          <a [routerLink]="[ '/' + variables.lang + '/self-help' ]">
+            <app-label src="selfhelp_title"></app-label>
+          </a>
+          <mat-icon class="backg2 icon">chevron_left</mat-icon>
+          <a [routerLink]="[ '/' + variables.lang + '/self-help', nsmi_term.tid ]" fxLayout="row" fxLayoutAlign="start center">
+            <app-icon svgClass="svg xs" svgIcon="tid{{nsmi_term.tid}}"></app-icon>
+            <div *ngIf="variables.lang === 'en'">
+              <span [innerHTML]="nsmi_term.name"></span>
+            </div>
+            <div *ngIf="variables.lang === 'es'">
+              <span [innerHTML]="nsmi_term.i18n.es.name[0].value"></span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!--Title-->
+    <div *ngIf="curNode[0].node_export.type[0].target_id !== 'block'" fxLayout="column">
+      <div fxLayout="row" class="pad">
+        <div *ngIf="setupIcon(curNode[0]) !== ''" fxLayout="column" fxLayoutAlign="center start" class="hide-print">
+          <app-icon svgClass="margin-right svg resp" [svgIcon]="setupIcon(curNode[0])"></app-icon>
+        </div>
+        <div fxFlex fxLayout="column" [ngClass]="{'padding-left': setupIcon(curNode[0]) !== ''}">
+          <h1 fxHide fxShow.gt-sm class="no-margin">
+            <div *ngIf="variables.lang === 'en'" [innerHTML]="curNode[0].title"></div>
+            <div *ngIf="variables.lang === 'es'" [innerHTML]="curNode[0].node_export.i18n['es'].title[0].value"></div>
+          </h1>
+          <h2 fxHide.gt-sm class="no-margin mobile-title">
+            <div *ngIf="variables.lang === 'en'" [innerHTML]="curNode[0].title"></div>
+            <div *ngIf="variables.lang === 'es'" [innerHTML]="curNode[0].node_export.i18n['es'].title[0].value"></div>
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

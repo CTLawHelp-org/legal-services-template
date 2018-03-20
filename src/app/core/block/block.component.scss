@@ -1,0 +1,19 @@
+.block {
+  position:relative;
+  .node-admin {
+    position:absolute;
+    top:0;
+    right:0;
+    display:none;
+  }
+  .list {
+    a {
+      text-decoration: none;
+    }
+  }
+  &:hover {
+    .node-admin {
+      display:block;
+    }
+  }
+}

@@ -1,0 +1,39 @@
+<div fxLayout="column" class="node-wrapper">
+  <div *ngIf="curNode.length > 0 && !working" [@contentAnimation]="curNode.length" fxLayout="column">
+    <div id="curnode">
+      <!--Page Body-->
+      <div *ngIf="curNode[0].node_export.type[0].target_id !== 'block'">
+        <div *ngIf="variables.lang === 'en'">
+          <div *ngIf="curNode[0].node_export.body.length > 0 && curNode[0].node_export.body[0].value !== ''"
+               class="content-pad-r">
+            <div [innerHTML]="curNode[0].node_export.body[0].value | safeHtml"></div>
+          </div>
+        </div>
+        <div *ngIf="variables.lang === 'es'">
+          <div *ngIf="curNode[0].node_export.i18n['es'].body.length > 0 && curNode[0].node_export.i18n['es'].body[0].value !== ''"
+               class="content-pad-r">
+            <div [innerHTML]="curNode[0].node_export.i18n['es'].body[0].value | safeHtml"></div>
+          </div>
+        </div>
+      </div>
+      <!--Block Body-->
+      <div *ngIf="curNode[0].node_export.type[0].target_id === 'block'">
+        <div *ngIf="variables.lang === 'en'">
+          <div *ngIf="curNode[0].node_export.body.length > 0" class="pad">
+            <div [innerHTML]="curNode[0].node_export.body[0].value | safeHtml"></div>
+          </div>
+        </div>
+        <div *ngIf="variables.lang === 'es'">
+          <div *ngIf="curNode[0].node_export.i18n['es'].body.length > 0" class="pad">
+            <div [innerHTML]="curNode[0].node_export.i18n['es'].body[0].value | safeHtml"></div>
+          </div>
+        </div>
+      </div>
+      <!--Segments-->
+      <div *ngIf="curNode[0].node_export.field_segments?.length > 0 && curNode[0].node_export.field_type?.length > 0"
+           class="content-pad-r">
+        <app-segments [src]="curNode[0].node_export.field_segments" [type]="curNode[0].node_export.field_type[0].target_id"></app-segments>
+      </div>
+    </div>
+  </div>
+</div>

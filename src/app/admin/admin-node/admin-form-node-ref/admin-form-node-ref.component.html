@@ -1,0 +1,22 @@
+<div fxLayout="row" fxLayoutAlign="end center">
+  <app-admin-node-picker style="margin-top:-20px;" [src]="src" type="all"></app-admin-node-picker>
+</div>
+<div *ngIf="src && src.length > 0" class="node-ref-wrapper">
+  <div dnd-sortable-container [sortableData]="src" fxLayout="column">
+    <div *ngFor="let item of src; let index = index;" dnd-sortable [sortableIndex]="index" class="item pad-sm">
+      <div fxLayout="column" class="mat-elevation-z1">
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div class="pad mat-caption"><strong>{{index + 1}}</strong></div>
+          <div [innerHTML]="item.src.title[0].value"></div>
+          <div fxFlex></div>
+          <div class="pad" (click)="src.splice(index, 1)">
+            <mat-icon>remove_circle</mat-icon>
+          </div>
+        </div>
+        <div class="backg3 bg pad-sm mat-caption">
+          {{item.src.field_type[0].name}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

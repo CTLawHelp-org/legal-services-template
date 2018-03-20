@@ -1,0 +1,12 @@
+<div fxLayout="column">
+  <div *ngIf="working">
+    <app-admin-loader></app-admin-loader>
+  </div>
+  <div *ngIf="!working">
+    <div *ngIf="node.length > 0" class="node-form-wrapper">
+      <div *ngIf="node[0].node_export.type[0].target_id === 'block'">
+        <app-admin-node-block [curNode]="node"></app-admin-node-block>
+      </div>
+    </div>
+  </div>
+</div>

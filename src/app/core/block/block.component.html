@@ -1,0 +1,36 @@
+<div class="block" fxLayout="column">
+  <div *ngIf="working">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!working && node.length > 0">
+    <!--Node Admin-->
+    <div *ngIf="variables.auth" class="node-admin">
+      <button mat-button [matMenuTriggerFor]="menu" class="min" aria-label="Node Menu">
+        <mat-icon>more_horiz</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <a mat-menu-item [href]="adminUrl" target="_blank">Edit</a>
+        <a mat-menu-item [href]="adminUrl2" target="_blank">Edit (Test)</a>
+      </mat-menu>
+    </div>
+    <div>
+      <app-node [curNode]="node"></app-node>
+    </div>
+    <div *ngIf="node[0].node_export.field_block_type.length > 0 && node[0].node_export.field_block_type[0].target_id === '685'">
+      <div *ngIf="node[0].node_export.field_nodes.length > 0 && variables.lang === 'en'" class="pad list">
+        <div *ngFor="let item of node[0].node_export.field_nodes; let last = last;">
+          <div *ngIf="show(item)" class="article" [ngClass]="{'margin-bottom': !last}">
+            <app-content-list [src]="[item]"></app-content-list>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="node[0].node_export.i18n.es.field_nodes.length > 0 && variables.lang === 'es'" class="pad list">
+        <div *ngFor="let item of node[0].node_export.i18n.es.field_nodes; let last = last;">
+          <div *ngIf="show(item)" class="article" [ngClass]="{'margin-bottom': !last}">
+            <app-content-list [src]="[item]"></app-content-list>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

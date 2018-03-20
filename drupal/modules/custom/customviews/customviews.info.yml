@@ -1,0 +1,4 @@
+name: Custom Views 
+description: ‘Custom fields and formatters for Drupal 8 Views API' 
+type: module 
+core: 8.x

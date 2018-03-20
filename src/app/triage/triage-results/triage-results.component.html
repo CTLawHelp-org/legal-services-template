@@ -1,0 +1,58 @@
+<div class="triage-results" fxLayout="column">
+  <div *ngIf="working">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!working">
+    <div fxLayout="column" [ngClass]="{'border-bottom': media.isMatched('(min-width: 960px)')}">
+      <div fxLayout="row wrap" fxLayoutAlign="start stretch">
+        <div fxHide fxShow.gt-sm fxLayout="row" fxLayoutAlign="start center" class="pad">
+          <app-icon svgClass="svg md primary icon" svgIcon="legalhelp"></app-icon>
+        </div>
+        <div class="pad">
+          <h1 fxHide fxShow.gt-sm class="no-margin">
+            <app-label src="triage_results"></app-label>
+          </h1>
+          <h2 fxHide.gt-sm class="no-margin">
+            <app-label src="triage_results"></app-label>
+          </h2>
+        </div>
+        <div fxFlex></div>
+        <div fxFlex="100" fxFlex.gt-sm="none" class="pad result-actions" [ngClass]="{'border-top-sm': !media.isMatched('(min-width: 960px)')}"
+             fxLayout="row wrap" fxLayoutAlign="space-between center" fxLayoutAlign.gt-sm="start center">
+          <div ngClass.gt-sm="margin-right">
+            <button mat-raised-button class="primary button" (click)="startOver()" appHighlight>
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon>refresh</mat-icon>
+                <app-label src="triage_start_over"></app-label>
+              </div>
+            </button>
+          </div>
+          <div ngClass.gt-sm="margin-left">
+            <button mat-raised-button class="primary button site-label" (click)="newSearch()" appHighlight>
+              <div fxLayout="row wrap" fxLayoutAlign="center center">
+                <app-icon svgClass="margin-right" svgIcon="legalhelp"></app-icon>
+                <app-label src="triage_add_search"></app-label>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="show_loc" class="triage-loc" fxLayout="column"
+           [ngClass]="{'border-top': media.isMatched('(min-width: 960px)'), 'border-top-sm': !media.isMatched('(min-width: 960px)')}">
+        <div class="pad">
+          <app-triage-location></app-triage-location>
+        </div>
+      </div>
+    </div>
+    <div fxLayout="row wrap">
+      <div fxFlex="100" fxFlex.gt-sm="70" class="results-wrapper" fxLayout="column"
+           [ngClass]="{'pad': media.isMatched('(min-width: 960px)')}">
+        <app-triage-summary [idx]="id"></app-triage-summary>
+      </div>
+      <div fxFlex="100" fxFlex.gt-sm="30" class="blocks"
+           [ngClass]="{'backg1 bg': !media.isMatched('(min-width: 960px)'), 'padding-left border-left': media.isMatched('(min-width: 960px)')}">
+        <app-self-help-menu></app-self-help-menu>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,41 @@
+<div fxLayout="row" fxLayoutAlign="center start" class="label-editor">
+  <div fxFlex="100" fxFlex.gt-sm="66" fxLayout="row wrap" class="max-width-layout">
+    <div fxFlex="100" fxLayout="row" fxLayoutAlign="end center">
+      <div>
+        <button mat-icon-button mat-raised-button (click)="variables.labelEdit = false" aria-label="Close">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div *ngFor="let item of labels" fxFlex="100" fxFlex.gt-sm="50" fxFlex.gt-md="25" class="pad">
+      <div *ngIf="item.working">
+        <app-loader></app-loader>
+      </div>
+      <form *ngIf="!item.working" name="label-edit" class="pad whitebg bg label-form" fxLayout="column">
+        <div><strong>Label:</strong> {{item.id}}</div>
+        <div fxLayout="column">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="pad-sm">EN</div>
+            <div fxFlex fxLayout="column">
+              <input [(ngModel)]="item.src.desc" name="label_en">
+            </div>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div class="pad-sm">ES</div>
+            <div fxFlex fxLayout="column">
+              <input [(ngModel)]="item.src.es.desc" name="label_es">
+            </div>
+          </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" class="margin-top">
+          <div>
+            <button mat-button mat-raised-button (click)="resetItem(item)">Reset</button>
+          </div>
+          <div>
+            <button mat-button mat-raised-button color="primary" (click)="saveItem(item)">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

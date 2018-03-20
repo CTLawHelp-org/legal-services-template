@@ -1,0 +1,19 @@
+<div class="lang-select" fxLayout="row" fxLayoutAlign="start center">
+  <mat-form-field *ngIf="isBrowser" fxLayout="row" fxLayoutAlign="start center">
+    <app-icon aria-hidden="true" svgClass="icon" svgIcon="language" title="Language Select"></app-icon>
+    <mat-select placeholder="Language Select" [(value)]="variables.lang" (onClose)="onChange()">
+      <mat-option value="en">English</mat-option>
+      <mat-option value="es">Español</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div *ngIf="!isBrowser" class="pad fallback">
+    <a *ngIf="variables.lang === 'en'" [routerLink]="[newUrl]"
+       title="Change Language" fxLayout="row" fxLayoutAlign="start center">
+      <img src="../../../assets/language.svg" alt="Language Icon" class="img-icon" /> English
+    </a>
+    <a *ngIf="variables.lang === 'es'" [routerLink]="[newUrl]"
+       title="Change Language" fxLayout="row" fxLayoutAlign="start center">
+      <img src="../../../assets/language.svg" alt="Language Icon" class="img-icon" /> Español
+    </a>
+  </div>
+</div>

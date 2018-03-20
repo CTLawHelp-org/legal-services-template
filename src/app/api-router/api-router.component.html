@@ -1,0 +1,14 @@
+<div fxLayout="column">
+  <div *ngIf="working">
+    <app-loader></app-loader>
+  </div>
+  <div *ngIf="!working" fxLayout="column">
+    <div fxLayout="row wrap">
+      <!-- Content -->
+      <div *ngIf="node.length > 0" class="content" fxFlex="100" fxLayout="column">
+        <app-node-top [curNode]="node"></app-node-top>
+        <app-node [curNode]="node"></app-node>
+      </div>
+    </div>
+  </div>
+</div>
