@@ -1,8 +1,10 @@
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
-import { renderModuleFactory } from '@angular/platform-server';
 import { enableProdMode } from '@angular/core';
-
+// Express Engine
+import { ngExpressEngine } from '@nguniversal/express-engine';
+// Import module map for lazy loading
+import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
 import * as express from 'express';
 import * as compression from 'compression';
 import { join } from 'path';
@@ -42,11 +44,6 @@ global['Prism'] = null;
 // * NOTE :: leave this as require() since this file is built Dynamically from webpack
 const { AppServerModuleNgFactory, LAZY_MODULE_MAP } = require('./dist/server/main.bundle');
 
-// Express Engine
-import { ngExpressEngine } from '@nguniversal/express-engine';
-// Import module map for lazy loading
-import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
-
 // Our Universal express-engine (found @ https://github.com/angular/universal/tree/master/modules/express-engine)
 app.engine('html', ngExpressEngine({
   bootstrap: AppServerModuleNgFactory,
@@ -57,10 +54,17 @@ app.engine('html', ngExpressEngine({
 
 app.set('view engine', 'html');
 app.set('views', join(DIST_FOLDER, 'browser'));
+let cache = {};
 
 /* - Example Express Rest API endpoints -
   app.get('/api/**', (req, res) => { });
 */
+
+app.get('/admin/**', (req, res) => {
+  cache = {};
+  global['navigator'] = req['headers']['user-agent'];
+  res.render('index', { req });
+});
 
 // Server static files from /browser
 app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
@@ -70,7 +74,20 @@ app.get('*.*', express.static(join(DIST_FOLDER, 'browser'), {
 // ALl regular routes use the Universal engine
 app.get('*', (req, res) => {
   global['navigator'] = req['headers']['user-agent'];
-  res.render('index', { req });
+  // res.render('index', { req });
+  const url = req.url;
+  const now = new Date();
+
+  if (cache[url] && now < cache[url].expiry) {
+    return res.send(cache[url].html);
+  }
+
+  res.render('index', { req }, (err, html) => {
+    const expiry = new Date();
+    expiry.setDate(expiry.getDate() + 15);
+    cache[url] = { expiry, html };
+    res.send(html);
+  });
 });
 
 // Start up the Node server
