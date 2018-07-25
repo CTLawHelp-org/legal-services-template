@@ -1,7 +1,7 @@
 <div fxLayout="row" fxLayoutAlign="space-around center" class="main-menu">
   <div *ngFor="let item of menu" class="item-wrapper" (mouseenter)="over(item)" (mouseleave)="out(item)">
     <a [routerLink]="variables.lang + '/' + item.link" routerLinkActive="active" fxLayout="row"
-       fxLayoutAlign="start center" appHighlight class="item border-radius">
+       fxLayoutAlign="start center" appHighlight class="item border-radius" [ngClass]="{'inactive': isElder(item.tid)}">
       <div *ngIf="variables.lang === 'en'">
         <span [innerHTML]="item.name"></span>
       </div>
@@ -16,7 +16,7 @@
         <div *ngIf="!first" fxLayout="column" class="drop-item" [ngClass]="{'margin-bottom-sm': !last}">
           <a [routerLink]="variables.lang + '/' + child.link" routerLinkActive="active"
              fxLayout="row" fxLayoutAlign="start center" appHighlight class="item border-radius">
-            <app-icon *ngIf="child.term_export && child.term_export.field_term_file.length > 0"
+            <app-icon *ngIf="child.term_export && child.term_export.field_public_term_file.length > 0"
                       svgClass="nsmi-icon margin-right svg sm" svgIcon="tid{{child.tid}}"></app-icon>
             <div *ngIf="variables.lang === 'en'">
               <span [innerHTML]="child.name"></span>
@@ -31,21 +31,22 @@
   </div>
   <!--Admin-->
   <div *ngIf="variables.auth" class="item-wrapper" (mouseenter)="admin = true" (mouseleave)="admin = false">
-    <a [href]="adminUrl" target="_blank"
-       fxLayout="row" fxLayoutAlign="start center" appHighlight class="item border-radius">
+    <a fxLayout="row" fxLayoutAlign="start center" appHighlight class="item border-radius">
       <div>Admin</div>
       <mat-icon class="icon">expand_more</mat-icon>
     </a>
     <div [@fadeInOut] [ngClass]="{'over': admin}"
          class="dropdown backg bg mat-elevation-z2">
-      <!--<a appHighlight class="item border-radius"
+      <a [href]="adminUrl" target="_blank" appHighlight class="item border-radius"
+         fxLayout="row" fxLayoutAlign="start center">
+        <div>External Site</div>
+      </a>
+      <a appHighlight class="item border-radius"
          fxLayout="row" fxLayoutAlign="start center" routerLink="/admin">
         <div>Dash</div>
-      </a>-->
-      <a appHighlight class="item border-radius" fxLayout="row" fxLayoutAlign="start center"
-         (click)="variables.labelEdit = !variables.labelEdit">
-        <div>Edit Labels</div>
       </a>
+      <app-admin-dialog type="labels"></app-admin-dialog>
+      <app-admin-dialog type="blocks"></app-admin-dialog>
     </div>
   </div>
 </div>

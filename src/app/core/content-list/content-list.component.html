@@ -14,7 +14,7 @@
         </h3>
       </a>
     </div>
-    <div fxLayout="row" fxLayoutAlign="end center">
+    <div fxLayout="row" fxLayoutAlign="end center" class="hide-print">
       <!--Node Admin-->
       <div *ngIf="variables.auth">
         <button mat-button [matMenuTriggerFor]="menu" class="min" aria-label="Node Menu">
@@ -26,7 +26,7 @@
       </div>
       <div *ngIf="preview">
         <button mat-icon-button mat-raised-button aria-label="Preview" (click)="viewArticle(item)">
-          <app-icon svgClass="svg xs" svgIcon="preview"></app-icon>
+          <app-icon svgClass="svg xs" svgIcon="tid715"></app-icon>
         </button>
       </div>
     </div>
@@ -70,7 +70,7 @@
         </h2>
       </div>
     </div>
-    <div fxLayout="row" fxLayoutAlign="end center">
+    <div fxLayout="row" fxLayoutAlign="end center" class="hide-print">
       <!--Node Admin-->
       <div *ngIf="variables.auth">
         <button mat-button [matMenuTriggerFor]="menu" class="min" aria-label="Node Menu">
@@ -82,7 +82,7 @@
       </div>
       <div *ngIf="preview && (item.link || item.link_es)">
         <button mat-icon-button mat-raised-button aria-label="Preview" (click)="loadArticle(item)">
-          <app-icon svgClass="svg xs" svgIcon="preview"></app-icon>
+          <app-icon svgClass="svg xs" svgIcon="tid715"></app-icon>
         </button>
       </div>
     </div>

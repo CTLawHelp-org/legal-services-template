@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { VariableService } from '../../services/variable.service';
-import { MatIconRegistry } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+const SELF_HELP_SM = makeStateKey('self_help_sm');
 
 @Component({
   selector: 'app-self-help-landing',
@@ -19,27 +20,25 @@ export class SelfHelpLandingComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private variableService: VariableService,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer
-  ) { }
+    private state: TransferState,
+  ) {}
 
   ngOnInit() {
     this.variables = this.variableService;
-    this.connection = this.apiService.getNSMI().subscribe(results => {
-      this.nsmi = results.nsmi;
+    const _nsmi = this.state.get(SELF_HELP_SM, null as any);
+    if (_nsmi !== null) {
+      this.nsmi = _nsmi;
       this.doneLoading();
-    });
+    } else {
+      this.connection = this.apiService.getNSMI().subscribe(results => {
+        this.nsmi = results.nsmi;
+        this.state.set(SELF_HELP_SM, this.nsmi as any);
+        this.doneLoading();
+      });
+    }
   }
 
   doneLoading() {
-    const self = this;
-    this.nsmi.forEach(function(i) {
-      if (i.term_export.field_term_file.length > 0) {
-        self.iconRegistry.addSvgIcon(
-          'tid' + i.id,
-          self.sanitizer.bypassSecurityTrustResourceUrl(i.term_export.field_term_file[0].url));
-      }
-    });
     this.working = false;
     if (this.connection) {
       this.connection.unsubscribe();

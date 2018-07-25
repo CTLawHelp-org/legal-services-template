@@ -1,11 +1,11 @@
 <div class="segments-wrapper">
   <!--Page and Article Styles-->
   <div *ngIf="type === '9' || type === '7'">
-    <div *ngFor="let item of src; let last = last; let index = index;"
-         [ngClass]="{'pad': !media.isMatched('(min-width: 960px)')}">
-      <div *ngIf="showSeg(item)">
+    <div *ngFor="let item of src; let last = last; let index = index;" class="margin-bottom-lg-r seg-item">
+      <div *ngIf="showSeg(item)" [id]="'s' + index">
+        <a [name]="'s' + index"></a>
         <!--Title-->
-        <div [id]="'s' + index" class="margin-bottom" fxLayout="row" fxLayoutAlign="start center"
+        <div class="margin-bottom" fxLayout="row" fxLayoutAlign="start end"
              [ngClass]="{'padding-bottom border-bottom': type === '7'}">
           <div *ngIf="variables.lang === 'en'">
             <h2 class="no-margin" [innerHTML]="item.name"></h2>
@@ -15,7 +15,7 @@
           </div>
           <div fxFlex></div>
           <div>
-            <a [routerLink]="['.']" [fragment]="'s' + index">
+            <a routerLink="." [fragment]="'s' + index">
               <mat-icon class="link-icon backg2 icon" appHighlight>link</mat-icon>
             </a>
           </div>
@@ -44,8 +44,8 @@
   <div *ngIf="type === '6'" fxLayout="row wrap" id="guide">
     <!--Guide Content-->
     <div fxFlex="100" fxFlex.gt-sm="70" fxFlexOrder="1" fxFlexOrder.gt-sm="2" *ngIf="curitem"
-         class="whitebg bg hide-print" [ngClass]="{'pad-sm': !media.isMatched('(min-width: 960px)'), 'pad': media.isMatched('(min-width: 960px)')}">
-      <div class="pad mat-elevation-z2" fxLayout="column">
+         class="whitebg bg hide-print pad-r-gt-xs">
+      <div class="pad-r mat-elevation-z2 border-radius" fxLayout="column">
         <!--Title-->
         <div class="margin-bottom" fxLayout="row" fxLayoutAlign="start center">
           <div>
@@ -58,13 +58,15 @@
           </div>
           <div fxFlex></div>
           <div fxLayout="row" fxLayoutAlign="space-between center">
-            <button mat-icon-button mat-raised-button aria-label="Previous" (click)="prevItem(curIndex)">
+            <a routerLink="." [queryParams]="{'s': prevIndex(curIndex)}" mat-icon-button mat-raised-button
+               aria-label="Previous" (click)="prevItem(curIndex)">
               <mat-icon>chevron_left</mat-icon>
-            </button>
+            </a>
             <div fxFlex class="pad"></div>
-            <button mat-icon-button mat-raised-button aria-label="Next" (click)="nextItem(curIndex)">
+            <a routerLink="." [queryParams]="{'s': nextIndex(curIndex)}" mat-icon-button mat-raised-button
+               aria-label="Next" (click)="nextItem(curIndex)">
               <mat-icon>chevron_right</mat-icon>
-            </button>
+            </a>
           </div>
         </div>
         <!--Body / Node Reference-->
@@ -85,12 +87,13 @@
           </div>
         </div>
         <!--Bottom Pagination-->
-        <div fxLayout="column" class="backg1 bg pad">
+        <div fxLayout="column" class="backg1 bg pad border-radius">
           <div fxLayout="row wrap" fxLayoutAlign="space-between center">
             <div fxFlex="100" fxFlex.gt-sm fxLayout="row" fxLayoutAlign="start center">
-              <button mat-icon-button mat-raised-button aria-label="Previous" (click)="prevItem(curIndex)">
+              <a routerLink="." [queryParams]="{'s': prevIndex(curIndex)}" mat-icon-button mat-raised-button
+                 aria-label="Previous" (click)="prevItem(curIndex)">
                 <mat-icon>chevron_left</mat-icon>
-              </button>
+              </a>
               <div class="pad">
                 <div *ngIf="variables.lang === 'en'">
                   <h4 class="no-margin" [innerHTML]="src[prevIndex(curIndex)].name"></h4>
@@ -110,9 +113,10 @@
                   <h4 class="no-margin" [innerHTML]="src[nextIndex(curIndex)].src.i18n['es'].title[0].value"></h4>
                 </div>
               </div>
-              <button mat-icon-button mat-raised-button aria-label="Next" (click)="nextItem(curIndex)">
+              <a routerLink="." [queryParams]="{'s': nextIndex(curIndex)}" mat-icon-button mat-raised-button
+                 aria-label="Next" (click)="nextItem(curIndex)">
                 <mat-icon>chevron_right</mat-icon>
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -120,7 +124,7 @@
     </div>
     <!--Guide Menu-->
     <div fxFlex="100" fxFlex.gt-sm="30" fxFlexOrder="2" fxFlexOrder.gt-sm="1" fxLayout="column"
-         class="pad guide-menu whitebg bg hide-print">
+         class="pad-r guide-menu whitebg bg hide-print">
       <div *ngFor="let item of src; let last = last; let index = index;" class="guide-item"
            [ngClass]="{'margin-bottom': !last}" fxLayout="row" fxLayoutAlign="start center">
         <div class="margin-right">
@@ -129,19 +133,9 @@
             <mat-icon>check</mat-icon>
           </button>
         </div>
-        <div *ngIf="!isBrowser" fxFlex fxLayout="column">
-          <a [routerLink]="['.']" [fragment]="'s' + index" mat-raised-button (click)="chooseItem(index, $event)"
-             class="primary button border-radius pad guide-btn" appHighlight [ngClass]="{'active': index === curIndex}">
-            <div *ngIf="variables.lang === 'en'">
-              <div class="no-margin" [innerHTML]="item.name"></div>
-            </div>
-            <div *ngIf="variables.lang === 'es'">
-              <div class="no-margin" [innerHTML]="item.src.i18n['es'].title[0].value"></div>
-            </div>
-          </a>
-        </div>
-        <div *ngIf="isBrowser" fxFlex fxLayout="column">
-          <button (click)="chooseItem(index, $event)" mat-raised-button class="primary button border-radius pad guide-btn"
+        <div fxFlex fxLayout="column">
+          <a routerLink="." [queryParams]="{'s': index}" (click)="chooseItem(index, $event)"
+             mat-raised-button class="primary button border-radius pad guide-btn"
                   appHighlight [ngClass]="{'active': index === curIndex}">
             <div *ngIf="variables.lang === 'en'">
               <div class="no-margin" [innerHTML]="item.name"></div>
@@ -149,7 +143,7 @@
             <div *ngIf="variables.lang === 'es'">
               <div class="no-margin" [innerHTML]="item.src.i18n['es'].title[0].value"></div>
             </div>
-          </button>
+          </a>
         </div>
       </div>
     </div>

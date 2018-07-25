@@ -3,6 +3,9 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { VariableService } from '../services/variable.service';
 import { ApiService } from '../services/api.service';
 import { MetaService } from '@ngx-meta/core';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+const STATE_KEY = makeStateKey;
 
 @Component({
   selector: 'app-min-router',
@@ -22,7 +25,8 @@ export class MinRouterComponent implements OnInit, OnDestroy {
     private router: Router,
     private apiService: ApiService,
     private variableService: VariableService,
-    private meta: MetaService
+    private meta: MetaService,
+    private state: TransferState,
   ) {}
 
   ngOnInit() {
@@ -50,11 +54,19 @@ export class MinRouterComponent implements OnInit, OnDestroy {
   }
 
   loadNode() {
-    this.connection = this.apiService.getNode(this.id).subscribe(data => {
-      this.node = data;
+    const _node = this.state.get(STATE_KEY(this.id), null as any);
+    if (_node !== null) {
+      this.node = _node;
       this.variableService.setPageTitle(this.decodeTitle(this.node[0].title));
       this.doneLoading();
-    });
+    } else {
+      this.connection = this.apiService.getNode(this.id).subscribe(data => {
+        this.node = data;
+        this.state.set(STATE_KEY(this.id), this.node as any);
+        this.variableService.setPageTitle(this.decodeTitle(this.node[0].title));
+        this.doneLoading();
+      });
+    }
   }
 
   doneLoading() {

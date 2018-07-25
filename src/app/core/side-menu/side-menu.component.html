@@ -4,7 +4,8 @@
 <div *ngIf="!working" fxLayout="column" class="side-menu">
   <div *ngFor="let item of menu; let last = last;" class="item-wrapper" [ngClass]="{'show': item.show, 'margin-bottom': !last}">
     <div fxLayout="row" fxLayoutAlign="start center">
-      <a fxFlex [routerLink]="variables.lang + '/' + item.link" routerLinkActive="active" (click)="toggleMenu()" class="item pad menu-link border-radius">
+      <a fxFlex [routerLink]="variables.lang + '/' + item.link" routerLinkActive="active"
+         [ngClass]="{'inactive': isElder(item.tid)}" (click)="toggleMenu()" class="item pad side-menu-link primary-color border-radius">
         <span *ngIf="variables.lang === 'en'">
           <span [innerHTML]="item.name"></span>
         </span>
@@ -12,18 +13,13 @@
           <span [innerHTML]="item.i18n['es'].name[0].value"></span>
         </span>
       </a>
-      <!--<div *ngIf="item.term_export.field_pages_plus.length > 1" class="margin-left">
-        <button (click)="toggleItem(item)" class="primary button" mat-icon-button>
-          <mat-icon class="icon">keyboard_arrow_down</mat-icon>
-        </button>
-      </div>-->
     </div>
     <div *ngIf="item.term_export.field_pages_plus.length > 1" class="submenu margin-top-sm pad-sm backg1 border-lg tid-{{item.tid}}">
       <div *ngFor="let child of item.term_export.field_pages_plus; let first = first">
         <div *ngIf="!first" class="item" fxLayout="column">
           <a [routerLink]="variables.lang + '/' + child.link" routerLinkActive="active" (click)="toggleMenu()"
              fxLayout="row" fxLayoutAlign="start center" class="item pad menu-link border-radius">
-            <app-icon *ngIf="child.term_export && child.term_export.field_term_file.length > 0"
+            <app-icon *ngIf="child.term_export && child.term_export.field_public_term_file.length > 0"
                       svgClass="nsmi-icon margin-right svg sm" svgIcon="tid{{child.tid}}"></app-icon>
             <span *ngIf="variables.lang === 'en'">
               <span [innerHTML]="child.name"></span>

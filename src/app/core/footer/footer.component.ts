@@ -1,8 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 import { ApiService } from '../../services/api.service';
-import { MatIconRegistry } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
 import { VariableService } from '../../services/variable.service';
 
 @Component({
@@ -16,8 +14,6 @@ export class FooterComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
     private variableService: VariableService
   ) {}
 

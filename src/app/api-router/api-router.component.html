@@ -1,13 +1,42 @@
-<div fxLayout="column">
+<div fxLayout="column" class="api-wrapper">
   <div *ngIf="working">
     <app-loader></app-loader>
   </div>
-  <div *ngIf="!working" fxLayout="column">
+  <div fxLayout="column">
     <div fxLayout="row wrap">
+      <!-- Left Block System -->
+      <div *ngIf="node.length > 0 && hasBlocks && blocks['left'].length > 0" class="api-sidebar left side-pad-r"
+           fxFlex="100" fxFlex.gt-sm="30" fxFlexOrder="2" fxFlexOrder.gt-sm="1">
+        <div *ngFor="let item of blocks['left']">
+          <app-block [nid]="item"></app-block>
+        </div>
+      </div>
       <!-- Content -->
-      <div *ngIf="node.length > 0" class="content" fxFlex="100" fxLayout="column">
-        <app-node-top [curNode]="node"></app-node-top>
-        <app-node [curNode]="node"></app-node>
+      <div *ngIf="node.length > 0" class="content"
+           fxFlex="100" fxFlex.gt-sm fxFlexOrder="1" fxFlexOrder.gt-sm="2" fxLayout="column">
+        <app-node-top [curNode]="node" class="content-pad-r"></app-node-top>
+        <!--Content Top Block System-->
+        <div *ngIf="node.length > 0 && hasBlocks && blocks['content_top'].length > 0 && node[0].node_export.nid[0].value !== '820'">
+          <div *ngFor="let item of blocks['content_top']">
+            <app-block [nid]="item"></app-block>
+          </div>
+        </div>
+        <app-node [curNode]="node" class="content-pad-r"></app-node>
+        <!--Content Bottom Block System-->
+        <div *ngIf="node.length > 0 && hasBlocks && blocks['content_bottom'].length > 0 && node[0].node_export.field_type[0].target_id !== '6'"
+             class="border-top hide-print content-pad-r">
+          <div *ngFor="let item of blocks['content_bottom']">
+            <app-block [nid]="item"></app-block>
+          </div>
+        </div>
+      </div>
+      <!--Right Block System-->
+      <div *ngIf="node.length > 0 && hasBlocks && blocks['right'].length > 0 && node[0].node_export.field_type.length > 0
+      && node[0].node_export.field_type[0].target_id !== '6'"
+           fxFlex="100" fxFlex.gt-sm="30" fxFlexOrder="3" fxFlexOrder.gt-sm="3" class="api-sidebar right side-pad-r">
+        <div *ngFor="let item of blocks['right']">
+          <app-block [nid]="item"></app-block>
+        </div>
       </div>
     </div>
   </div>

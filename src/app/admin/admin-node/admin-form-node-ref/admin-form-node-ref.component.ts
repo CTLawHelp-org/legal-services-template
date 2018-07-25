@@ -7,10 +7,25 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AdminFormNodeRefComponent implements OnInit {
   @Input() src;
-  private copy: any;
+  @Input() type;
+  @Input() history;
 
   constructor() { }
 
   ngOnInit() {}
+
+  addTo($event: any) {
+    if ($event) {
+      let found = false;
+      this.src.forEach(function (item) {
+        if (item.target_id === $event.dragData.target_id) {
+          found = true;
+        }
+      });
+      if (!found) {
+        this.src.push($event.dragData);
+      }
+    }
+  }
 
 }

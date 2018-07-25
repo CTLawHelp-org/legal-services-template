@@ -19,17 +19,11 @@ export class LangSelectComponent implements OnInit {
   public isBrowser: boolean;
 
   constructor(
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
     private variableService: VariableService,
     private router: Router,
     private location: Location,
     @Inject(PLATFORM_ID) private platformId,
-  ) {
-    iconRegistry.addSvgIcon(
-      'language',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/language.svg'));
-  }
+  ) {}
 
   ngOnInit() {
     this.variables = this.variableService;
@@ -41,8 +35,9 @@ export class LangSelectComponent implements OnInit {
     }
   }
 
-  onChange() {
+  changeLang(val: string) {
     this.working = true;
+    this.variables.lang = val;
     const new_url = '/' + this.variables.lang + '/' + this.router.url.substring(4);
     this.location.go(new_url);
     this.variableService.setLanguage(this.variables.lang).subscribe(() => {

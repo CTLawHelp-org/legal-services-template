@@ -1,4 +1,8 @@
 .segments-wrapper {
+  .seg-item {
+    clear:both;
+    overflow:hidden;
+  }
   .guide-menu {
     .guide-item {
       a {

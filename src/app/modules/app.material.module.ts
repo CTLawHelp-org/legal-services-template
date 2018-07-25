@@ -11,7 +11,9 @@ import {
   MatCheckboxModule,
   MatRadioModule,
   MatDialogModule,
-  MatTabsModule
+  MatTabsModule,
+  MatSlideToggleModule,
+  MatInputModule,
 } from '@angular/material';
 
 import { PlatformModule } from '@angular/cdk/platform';
@@ -34,6 +36,8 @@ import { LayoutModule } from '@angular/cdk/layout';
     MatRadioModule,
     MatDialogModule,
     MatTabsModule,
+    MatSlideToggleModule,
+    MatInputModule,
   ]
 })
 export class MaterialModule { }
