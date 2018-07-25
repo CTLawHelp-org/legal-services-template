@@ -1,7 +1,7 @@
-<div *ngIf="item.processed" class="pad mat-elevation-z2 whitebg bg segment-wrapper">
+<div *ngIf="item.processed" class="pad-r mat-elevation-z2 border-radius whitebg bg segment-wrapper">
   <div class="pad backg1 bg margin-bottom" fxLayout="row wrap" fxLayoutAlign="start center">
     <div class="margin-right">Excerpt from</div>
-    <a [routerLink]="'/' + variables.lang + '/' + item.parent.link">
+    <a [routerLink]="'/' + variables.lang + '/' + item.parent.link" class="seg-link">
       <div *ngIf="variables.lang === 'en'">
         <div [innerHTML]="item.parent.node_export.title[0].value"></div>
       </div>

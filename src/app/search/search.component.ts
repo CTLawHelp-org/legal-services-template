@@ -6,6 +6,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { isPlatformBrowser, Location } from '@angular/common';
 import { Model } from './search.model';
+import { Angulartics2 } from 'angulartics2';
 import { MetaService } from '@ngx-meta/core';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { MatIconRegistry } from '@angular/material';
@@ -25,6 +26,14 @@ export class SearchComponent implements OnInit, OnDestroy {
   private id: string;
   public searches = [];
   public currentIdx = 0;
+  public hasBlocks = false;
+  public blocks = {
+    content_top: [],
+    left: [],
+    right: [],
+    content_bottom: [],
+  };
+  private minScore = 13;
 
   constructor(
     private route: ActivatedRoute,
@@ -34,15 +43,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     private breakpointObserver: BreakpointObserver,
     @Inject(PLATFORM_ID) private platformId,
     private location: Location,
+    private angulartics2: Angulartics2,
     private meta: MetaService,
     @Inject(DOCUMENT) private document: any,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
   ) {
     this.media = breakpointObserver;
-    iconRegistry.addSvgIcon(
-      'legalhelp',
-      sanitizer.bypassSecurityTrustResourceUrl('../assets/legal-help-finder.svg'));
   }
 
   ngOnInit() {
@@ -50,9 +55,15 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.variableService.setPageTitle('Search Results');
     this.meta.setTag('og:title', 'Search Results');
     this.meta.setTag('og:url', this.document.location.href);
-    this.connection = this.variableService.getSearch().subscribe(results => {
+
+    const block_page = this.apiService.getBlocks('all', 'search', 'all');
+    const search_obs = this.variableService.getSearch();
+    this.connection = forkJoin([search_obs, block_page]).subscribe(results => {
       this.connection.unsubscribe();
-      this.searches = results;
+      this.searches = results[0];
+      if (results[1].length > 0) {
+        this.setupBlocks(results[1][0], results[1][0].term_export.field_block_setup);
+      }
       if (this.route.snapshot.paramMap.get('id')) {
         this.loadResults(this.route.snapshot.paramMap.get('id'));
       } else if (typeof this.route.snapshot.queryParams.keyword !== 'undefined') {
@@ -76,6 +87,20 @@ export class SearchComponent implements OnInit, OnDestroy {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }
+  }
+
+  setupBlocks(src: any, items: any) {
+    this.hasBlocks = true;
+    const self = this;
+    items.forEach(function (item) {
+      if (!item.processed) {
+        item.value = item.value.split(',');
+        item.processed = true;
+      }
+      self.blocks[item.value[0]][item.value[1]] = item.target_id;
+    });
+    this.variableService.currentBlocksSrc = src;
+    this.variableService.currentBlocks = items;
   }
 
   print() {
@@ -133,8 +158,10 @@ export class SearchComponent implements OnInit, OnDestroy {
       });
       // Triage Search Results
       if (results[2].length > 0) {
+        const self = this;
         results[2].forEach(function (i) {
-          if (obj.search.triage.length < 3) {
+          const score = parseFloat(i.relevance);
+          if (obj.search.triage.length < 3 && score > self.minScore) {
             obj.search.triage.push(i);
           }
         });
@@ -150,6 +177,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         this.searches[prev_index] = obj;
         this.processSearch(this.searches[prev_index]);
       }
+      // set page view
+      this.angulartics2.pageTrack.next({ path: this.router.url });
     });
   }
 
@@ -261,7 +290,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   showSeg(item: any): boolean {
     let output = false;
     const score = parseFloat(item.relevance);
-    if (score > 13) {
+    if (score > this.minScore) {
       output = true;
     }
     return output;

@@ -14,6 +14,8 @@
 }
 
 .dialog-node {
+  max-height:100% !important;
+  margin:0 !important;
   .crumb, .node-buttons {
     display:none !important;
   }
@@ -25,5 +27,12 @@
     &:hover {
       text-decoration:underline;
     }
+  }
+}
+
+// Print styles
+@media only print {
+  .hide-print {
+    display:none !important;
   }
 }

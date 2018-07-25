@@ -11,23 +11,68 @@ import {
 
 export const BLOCK_FORM: DynamicFormControlModel[] = [
 
-  new DynamicSelectModel({
-    id: 'lang',
-    label: 'Language',
-    options: [
-      {
-        label: 'English',
-        value: 'en'
-      },
-      {
-        label: 'Spanish',
-        value: 'es'
-      },
-      {
-        label: 'Both',
-        value: 'both'
-      }
-    ]
+  new DynamicFormGroupModel({
+    id: 'top',
+    legend: 'Top',
+    group: [
+      new DynamicSelectModel({
+        id: 'lang',
+        label: 'Language',
+        options: [
+          {
+            label: 'English',
+            value: 'en'
+          },
+          {
+            label: 'Spanish',
+            value: 'es'
+          },
+          {
+            label: 'Both',
+            value: 'both'
+          }
+        ]
+      }),
+
+      new DynamicSelectModel({
+        id: 'type',
+        label: 'Type',
+        options: []
+      }),
+
+      new DynamicSelectModel({
+        id: 'style',
+        label: 'Style',
+        options: [
+          {
+            label: 'Choose Style',
+            value: ''
+          },
+          {
+            label: 'Drop Shadow',
+            value: 'drop'
+          },
+          {
+            label: 'Alert',
+            value: 'alert'
+          },
+          {
+            label: 'Home Large',
+            value: 'home_lg'
+          },
+          {
+            label: 'Home Small',
+            value: 'home_sm'
+          },
+        ]
+      }),
+
+      new DynamicSelectModel({
+        id: 'icon',
+        label: 'Icon',
+        options: []
+      }),
+    ],
   }),
 
   new DynamicInputModel({
@@ -51,8 +96,12 @@ export const BLOCK_FORM: DynamicFormControlModel[] = [
         value: '',
       }),
       new DynamicInputModel({
+        id: 'link_en',
+        label: 'English Link',
+      }),
+      new DynamicInputModel({
         id: 'node_ref_en',
-        label: 'Node References',
+        label: 'English Node References',
       }),
     ],
   }),
@@ -72,10 +121,20 @@ export const BLOCK_FORM: DynamicFormControlModel[] = [
         value: '',
       }),
       new DynamicInputModel({
+        id: 'link_es',
+        label: 'Spanish Link',
+      }),
+      new DynamicInputModel({
         id: 'node_ref_es',
-        label: 'Node References',
+        label: 'Spanish Node References',
       }),
     ],
+  }),
+
+  new DynamicInputModel({
+    id: 'image',
+    label: 'Images',
+    inputType: 'file',
   }),
 
   /*new DynamicInputModel({
@@ -87,14 +146,38 @@ export const BLOCK_FORM: DynamicFormControlModel[] = [
 ];
 
 export const BLOCK_FORM_LAYOUT = {
-  'lang': {
+  'top': {
     grid: {
       container: 'pad ui-g-12',
+      control: 'ui-g',
+    }
+  },
+  'lang': {
+    grid: {
+      container: 'margin-right-lg',
+      label: 'required'
+    }
+  },
+  'type': {
+    grid: {
+      container: 'margin-right-lg',
+    }
+  },
+  'style': {
+    grid: {
+      container: 'margin-right-lg',
+    }
+  },
+  'icon': {
+    element: {
+      control: 'hide',
+      label: 'hide'
     }
   },
   'title_en': {
     grid: {
       container: 'pad ui-g-12',
+      label: 'required'
     }
   },
   'english': {
@@ -105,6 +188,11 @@ export const BLOCK_FORM_LAYOUT = {
   'body_en': {
     element: {
       control: 'editor',
+      container: 'margin-bottom'
+    }
+  },
+  'link_en': {
+    element: {
       container: 'margin-bottom'
     }
   },
@@ -124,9 +212,19 @@ export const BLOCK_FORM_LAYOUT = {
       container: 'margin-bottom'
     }
   },
+  'link_es': {
+    element: {
+      container: 'margin-bottom'
+    }
+  },
   'node_ref_es': {
     element: {
       control: 'hide'
+    }
+  },
+  'image': {
+    grid: {
+      container: 'pad ui-g-12',
     }
   },
 };

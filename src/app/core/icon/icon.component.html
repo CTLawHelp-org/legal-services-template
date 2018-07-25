@@ -1,20 +1,5 @@
-<div fxLayout="column">
-  <div *ngIf="isBrowser" fxLayout="column" fxLayoutAlign="center center">
+<div fxLayout="column" class="hide-print">
+  <div fxLayout="column" fxLayoutAlign="center center">
     <mat-icon [svgIcon]="svgIcon" [ngClass]="svgClass"></mat-icon>
-  </div>
-  <div *ngIf="!isBrowser" fxLayout="column" fxLayoutAlign="center center">
-    <img *ngIf="svgIcon === 'facebook'" src="../../../assets/facebook.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'twitter'" src="../../../assets/twitter.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'important'" src="../../../assets/important.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'language'" src="../../../assets/language.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'legalhelp'" src="../../../assets/legal-help-finder.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'probono'" src="../../../assets/legal-professional.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'selfhelp'" src="../../../assets/legal-info.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'map'" src="../../../assets/map.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'pdf'" src="../../../assets/pdf.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'search'" src="../../../assets/search.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'print'" src="../../../assets/print.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'pin'" src="../../../assets/pin.svg" [ngClass]="svgClass" />
-    <img *ngIf="svgIcon === 'preview'" src="../../../assets/preview.svg" [ngClass]="svgClass" />
   </div>
 </div>

@@ -3,7 +3,8 @@ import { ICellRendererAngularComp } from 'ag-grid-angular';
 
 @Component({
   selector: 'app-title-render',
-  template: `<span>{{value}}</span><a routerLink="/admin/content/{{nid}}" class="margin-left">Edit</a>`,
+  template: `<a routerLink="/admin/content/edit/{{nid}}" class="button margin-right"><mat-icon class="svg admin-xs">edit</mat-icon></a>
+  <span>{{value}}</span>`,
   styles: [``]
 })
 export class TitleRenderComponent implements ICellRendererAngularComp {

@@ -2,12 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { ApiRouterComponent } from '../api-router/api-router.component';
-import { MinRouterComponent } from '../min-router/min-router.component';
-import { SearchComponent } from '../search/search.component';
-import { TriageLandingComponent } from '../triage/triage-landing/triage-landing.component';
-import { SelfHelpComponent } from '../self-help/self-help.component';
-import { TriageLoadComponent } from '../triage/triage-load/triage-load.component';
-import { TriageResultsComponent } from '../triage/triage-results/triage-results.component';
 import { HomeComponent } from '../home/home.component';
 
 const appRoutes: Routes = [
@@ -16,20 +10,20 @@ const appRoutes: Routes = [
     data: { message: 'en' },
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'legal-help', component: TriageLandingComponent },
-      { path: 'legal-help/view/:id', component: TriageLandingComponent },
-      { path: 'legal-help/results', component: TriageResultsComponent },
-      { path: 'legal-help/results/:id', component: TriageResultsComponent },
-      { path: 'saved/legal-help/:status/:id', component: TriageLoadComponent },
+      { path: 'legal-help', loadChildren: '../triage/triage-landing/triage-landing.module#TriageLandingModule' },
+      { path: 'legal-help/view/:id', loadChildren: '../triage/triage-landing/triage-landing.module#TriageLandingModule' },
+      { path: 'legal-help/results', loadChildren: '../triage/triage-results/triage-results.module#TriageResultsModule' },
+      { path: 'legal-help/results/:id', loadChildren: '../triage/triage-results/triage-results.module#TriageResultsModule' },
+      { path: 'saved/legal-help/:status/:id', loadChildren: '../triage/triage-load/triage-load.module#TriageLoadModule' },
       { path: 'get-help', redirectTo: '/en/legal-help', pathMatch: 'full' },
-      { path: 'self-help', component: ApiRouterComponent },
-      { path: 'self-help/:id', component: SelfHelpComponent },
-      { path: 'self-help-guides/elder-law', redirectTo: '/en/self-help/537', pathMatch: 'full' },
-      { path: 'node/:id', component: ApiRouterComponent },
-      { path: 'min/view/:id', component: MinRouterComponent },
-      { path: 'search', component: SearchComponent },
-      { path: 'search/:id', component: SearchComponent },
-      { path: '**', component: ApiRouterComponent }
+      { path: 'self-help', loadChildren: '../api-router/api-router.module#ApiRouterModule' },
+      { path: 'self-help/:id', loadChildren: '../self-help/self-help.module#SelfHelpModule' },
+      { path: 'self-help/:id/:cat', loadChildren: '../self-help/self-help.module#SelfHelpModule' },
+      { path: 'node/:id', loadChildren: '../api-router/api-router.module#ApiRouterModule' },
+      { path: 'min/view/:id', loadChildren: '../min-router/min-router.module#MinRouterModule' },
+      { path: 'search', loadChildren: '../search/search.module#SearchModule' },
+      { path: 'search/:id', loadChildren: '../search/search.module#SearchModule' },
+      { path: '**', loadChildren: '../api-router/api-router.module#ApiRouterModule' }
     ]
   },
   {
@@ -37,20 +31,20 @@ const appRoutes: Routes = [
     data: { message: 'es' },
     children: [
       { path: 'home', component: HomeComponent },
-      { path: 'legal-help', component: TriageLandingComponent },
-      { path: 'legal-help/view/:id', component: TriageLandingComponent },
-      { path: 'legal-help/results', component: TriageResultsComponent },
-      { path: 'legal-help/results/:id', component: TriageResultsComponent },
-      { path: 'saved/legal-help/:status/:id', component: TriageLoadComponent },
-      { path: 'get-help', redirectTo: '/es/legal-help', pathMatch: 'full' },
-      { path: 'self-help', component: ApiRouterComponent },
-      { path: 'self-help/:id', component: SelfHelpComponent },
-      { path: 'self-help-guides/elder-law', redirectTo: '/es/self-help/537', pathMatch: 'full' },
-      { path: 'node/:id', component: ApiRouterComponent },
-      { path: 'min/view/:id', component: MinRouterComponent },
-      { path: 'search', component: SearchComponent },
-      { path: 'search/:id', component: SearchComponent },
-      { path: '**', component: ApiRouterComponent }
+      { path: 'legal-help', loadChildren: '../triage/triage-landing/triage-landing.module#TriageLandingModule' },
+      { path: 'legal-help/view/:id', loadChildren: '../triage/triage-landing/triage-landing.module#TriageLandingModule' },
+      { path: 'legal-help/results', loadChildren: '../triage/triage-results/triage-results.module#TriageResultsModule' },
+      { path: 'legal-help/results/:id', loadChildren: '../triage/triage-results/triage-results.module#TriageResultsModule' },
+      { path: 'saved/legal-help/:status/:id', loadChildren: '../triage/triage-load/triage-load.module#TriageLoadModule' },
+      { path: 'get-help', redirectTo: '/en/legal-help', pathMatch: 'full' },
+      { path: 'self-help', loadChildren: '../api-router/api-router.module#ApiRouterModule' },
+      { path: 'self-help/:id', loadChildren: '../self-help/self-help.module#SelfHelpModule' },
+      { path: 'self-help/:id/:cat', loadChildren: '../self-help/self-help.module#SelfHelpModule' },
+      { path: 'node/:id', loadChildren: '../api-router/api-router.module#ApiRouterModule' },
+      { path: 'min/view/:id', loadChildren: '../min-router/min-router.module#MinRouterModule' },
+      { path: 'search', loadChildren: '../search/search.module#SearchModule' },
+      { path: 'search/:id', loadChildren: '../search/search.module#SearchModule' },
+      { path: '**', loadChildren: '../api-router/api-router.module#ApiRouterModule' }
     ]
   },
   { path: 'admin', loadChildren: 'app/admin/admin-router/admin-router.module#AdminRouterModule' },
@@ -60,7 +54,6 @@ const appRoutes: Routes = [
   { path: 'search', redirectTo: '/en/search', pathMatch: 'full' },
   { path: 'search/:id', redirectTo: '/en/search/:id', pathMatch: 'full' },
   { path: 'self-help/:id', redirectTo: '/en/self-help/:id', pathMatch: 'full' },
-  { path: 'self-help-guides/elder-law', redirectTo: '/en/self-help/537', pathMatch: 'full' },
   { path: 'legal-help/view/:id', redirectTo: '/en/legal-help/view/:id', pathMatch: 'full' },
   { path: 'legal-help/results/:id', redirectTo: '/en/legal-help/results/:id', pathMatch: 'full' },
   { path: 'get-help', redirectTo: '/en/legal-help', pathMatch: 'full' },

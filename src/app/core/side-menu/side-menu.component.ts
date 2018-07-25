@@ -1,9 +1,7 @@
 import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
-
 import { ApiService } from '../../services/api.service';
 import { VariableService } from '../../services/variable.service';
-import { MatIconRegistry } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-side-menu',
@@ -22,8 +20,7 @@ export class SideMenuComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private variableService: VariableService,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -44,13 +41,6 @@ export class SideMenuComponent implements OnInit {
     this.menu.forEach(function(i) {
       if (i.tid === '643' && i.term_export.field_pages_plus.length > 0) {
         i.show = true;
-        i.term_export.field_pages_plus.forEach(function(term) {
-          if (term.term_export && term.term_export.field_term_file.length > 0) {
-            self.iconRegistry.addSvgIcon(
-              'tid' + term.tid,
-              self.sanitizer.bypassSecurityTrustResourceUrl(term.term_export.field_term_file[0].url));
-          }
-        });
       }
     });
     this.menu = this.menu.reverse();
@@ -63,6 +53,14 @@ export class SideMenuComponent implements OnInit {
 
   toggleItem(item: any) {
     item.show = !item.show;
+  }
+
+  isElder(id: string): boolean {
+    if (id === '643' && (this.router.url.indexOf('/en/self-help/537') !== -1 || this.router.url.indexOf('/es/self-help/537') !== -1)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

@@ -8,19 +8,22 @@
       outline:none;
     }
     &.active {
-      color:#fff;
+      color:#fff !important;
       .svg {
-        fill:#fff;
+        fill:#fff !important;
+      }
+    }
+    &.inactive {
+      background:none !important;
+      color:#002087 !important;
+      .svg {
+        fill:#002087 !important;
       }
     }
   }
   .item-wrapper {
-    // margin-bottom:4px;
     &:last-child {
       margin-bottom:0;
-    }
-    .item {
-
     }
     .icon {
       transition: transform 0.2s ease-in-out;
@@ -39,8 +42,4 @@
       }
     }
   }
-}
-
-.nsmi-icon {
-
 }

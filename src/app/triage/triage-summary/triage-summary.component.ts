@@ -6,7 +6,9 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { MatIconRegistry } from '@angular/material';
 import { isPlatformBrowser, Location } from '@angular/common';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Angulartics2 } from 'angulartics2';
 import { environment } from '../../../environments/environment';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-triage-summary',
@@ -29,12 +31,13 @@ import { environment } from '../../../environments/environment';
 export class TriageSummaryComponent implements OnInit {
   @Input() idx;
   private connection: any;
-  private user_status: any;
+  public user_status: any;
   private user_loc: any;
   public working = true;
-  public adminUrl: string;
   private saved_issues = [];
   public issues = [];
+  public saved_nids = [];
+  public saved_nodes = [];
   public variables: any;
   private loc_set = false;
   public media: any;
@@ -44,20 +47,18 @@ export class TriageSummaryComponent implements OnInit {
   constructor(
     private variableService: VariableService,
     private breakpointObserver: BreakpointObserver,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
     @Inject(PLATFORM_ID) private platformId,
     private location: Location,
+    private angulartics2: Angulartics2,
+    private apiService: ApiService,
+    private iconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer,
   ) {
     this.media = breakpointObserver;
-    iconRegistry.addSvgIcon(
-      'location',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/map.svg'));
   }
 
   ngOnInit() {
     this.variables = this.variableService;
-    this.adminUrl = environment.adminUrl + '/content/proc/';
     this.set_idx = this.idx;
     this.loadAll();
 
@@ -71,6 +72,7 @@ export class TriageSummaryComponent implements OnInit {
       this.user_loc = result;
       this.issues = [];
       this.doneUpdating([]);
+      this.sendStats();
     });
 
     this.variableService.statusSubject.subscribe(result => {
@@ -97,12 +99,46 @@ export class TriageSummaryComponent implements OnInit {
     if (this.issues.length > 0) {
       this.currentIdx = this.issues.length - 1;
       const self = this;
+      const nodes = [];
       this.issues.forEach(function (i, index) {
+        // icon setup
+        if (i.issues[0].term_export.field_public_term_file.length > 0) {
+          self.iconRegistry.addSvgIcon(
+            'tid' + i.issues[0].term_export.tid[0].value,
+            self.sanitizer.bypassSecurityTrustResourceUrl(i.issues[0].term_export.field_public_term_file[0].url));
+        }
+        i.issues[i.issues.length - 1].term_export.field_entry_settings.forEach(function (node) {
+          if (self.saved_nids.indexOf(node.target_id) === -1) {
+            self.saved_nids.push(node.target_id);
+            nodes.push(node.target_id);
+          }
+        });
         if (i.issues[i.issues.length - 1].tid === self.set_idx) {
           self.currentIdx = index;
         }
       });
+      this.apiService.getNode(nodes.join('+')).subscribe( result => {
+        this.setupNodes(result);
+      });
+    } else {
+      this.working = false;
     }
+  }
+
+  setupNodes(nodes: any) {
+    this.saved_nodes = this.saved_nodes.concat(nodes);
+    const self = this;
+    this.issues.forEach(function (i) {
+      i.issues[i.issues.length - 1].term_export.field_entry_settings.forEach(function (node) {
+        self.saved_nodes.forEach(function (item) {
+          if (node.target_id === item.nid) {
+            node.node_export = item.node_export;
+            node.i18n = item.node_export.i18n;
+          }
+        });
+      });
+    });
+    this.sendStats();
     this.working = false;
   }
 
@@ -115,6 +151,47 @@ export class TriageSummaryComponent implements OnInit {
     } else {
       this.issues = this.saved_issues;
       this.working = false;
+    }
+  }
+
+  sendStats() {
+    if (this.issues.length > 0) {
+      const last = this.issues[this.currentIdx].issues.length - 1;
+      const content_dem = [];
+      this.showEntry(this.issues[this.currentIdx]);
+      // issue
+      const issue_dem = [];
+      this.issues[this.currentIdx].issues.forEach(function (i, index) {
+        issue_dem.push(i.tid);
+        if (last === index) {
+          // content
+          i.term_export.field_entry_settings.forEach(function (entry) {
+            if (entry.hide === false || typeof entry.hide === 'undefined') {
+              content_dem.push(entry.target_id);
+            }
+          });
+        }
+      });
+      // status
+      const status_dem = [];
+      this.user_status.forEach(function (i) {
+        status_dem.push(i);
+      });
+      // location
+      let loc_dem = [this.user_loc.county, this.user_loc.city, this.user_loc.zipcode];
+      loc_dem = loc_dem.filter(n => n);
+      // build and send
+      const props = {};
+      props['dimension5'] = issue_dem.join(';');
+      props['dimension6'] = status_dem.join(';');
+      props['dimension7'] = loc_dem.join(';');
+      props['dimension8'] = content_dem.join(';');
+      props['category'] = 'triage';
+      props['value'] = 1;
+      this.angulartics2.eventTrack.next({
+        action: 'viewTriage',
+        properties: props
+      });
     }
   }
 
@@ -148,16 +225,6 @@ export class TriageSummaryComponent implements OnInit {
     } else {
       return true;
     }
-  }
-
-  setupIcon(item: any): string {
-    let icon = '';
-    if (item.node_export.field_icon && item.node_export.field_icon.length > 0) {
-      icon = 'tid' + item.node_export.field_icon[0].target_id;
-    } else if (item.node_export.field_type && item.node_export.field_type.length > 0) {
-      icon = 'tid' + item.node_export.field_type[0].target_id;
-    }
-    return icon;
   }
 
   tabChange(event: any) {

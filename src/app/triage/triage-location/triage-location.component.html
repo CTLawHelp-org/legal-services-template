@@ -6,10 +6,10 @@
     <div *ngIf="!loc_set">
       <form name="triage-loc" (ngSubmit)="setLoc()" #locForm="ngForm">
         <div fxLayout="row wrap" fxLayoutAlign="start center">
-          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutAlign.gt-sm="end center"
-               class="backg1 bg pad border-radius" [ngClass]="{'na': !media.isMatched('(min-width: 960px)')}">
+          <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center" class="backg1 bg pad border-radius"
+               [ngClass]="{'na': !media.isMatched('(min-width: 960px)')}">
             <div [ngClass]="{'pad': !media.isMatched('(min-width: 960px)')}" fxLayout="column" fxLayoutAlign="center start">
-              <app-icon svgClass="highlight icon svg sm" svgIcon="important"></app-icon>
+              <app-icon svgClass="highlight icon svg sm" svgIcon="tid629"></app-icon>
             </div>
             <div class="margin-left site-label" fxLayout="column">
               <h3 class="no-margin">
@@ -17,8 +17,7 @@
               </h3>
             </div>
           </div>
-          <div [ngClass]="{'margin-left': media.isMatched('(min-width: 960px)')}"
-               fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutAlign.gt-sm="end center">
+          <div fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutAlign.gt-sm="start center">
             <div class="pad site-label" [ngClass]="{'margin-top': !media.isMatched('(min-width: 960px)')}">
               <app-label src="triage_location_zip"></app-label>
             </div>
@@ -31,10 +30,10 @@
                 <div *ngIf="zip_error" class="zip-error alert bg"><span class="pad-sm">Invalid Zipcode</span></div>
               </div>
             </div>
-            <div fxFlex="100" fxFlex.gt-sm="none" class="pad text-center" [ngClass]="{'margin-right': media.isMatched('(min-width: 960px)')}">
+            <div fxFlex="100" fxFlex.gt-sm="none" class="pad margin-left text-center">
               OR
             </div>
-            <div [ngClass]="{'pad': !media.isMatched('(min-width: 960px)')}">
+            <div class="margin-left" [ngClass]="{'pad': !media.isMatched('(min-width: 960px)')}">
               <mat-form-field>
                 <mat-select placeholder="Select City" [(value)]="user_city">
                   <mat-option *ngFor="let loc of locations" [value]="loc">
@@ -55,7 +54,7 @@
     </div>
     <div *ngIf="loc_set" fxLayout="column" [ngClass]="{'pad': !media.isMatched('(min-width: 960px)')}">
       <div fxLayout="row" fxLayoutAlign="start center">
-        <app-icon svgClass="primary icon svg sm" svgIcon="location"></app-icon>
+        <app-icon svgClass="primary icon svg sm" svgIcon="tid633"></app-icon>
         <div class="margin-left">
           <div *ngIf="user_zip !== ''">{{user_zip}}</div>
           <div *ngIf="user_city !== ''">{{user_city | titlecase}}</div>

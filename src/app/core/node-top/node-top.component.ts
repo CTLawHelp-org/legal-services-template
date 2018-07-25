@@ -4,8 +4,10 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { environment } from '../../../environments/environment';
 import { VariableService } from '../../services/variable.service';
 import { ApiService } from '../../services/api.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, makeStateKey, TransferState } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
+
+const NSMI = makeStateKey('nsmi');
 
 @Component({
   selector: 'app-node-top',
@@ -21,6 +23,7 @@ export class NodeTopComponent implements OnInit {
   private connection: any;
   public nsmi = [];
   public nsmi_term: any;
+  public nsmi_subterm: any;
   public isBrowser: any;
 
   constructor(
@@ -29,7 +32,8 @@ export class NodeTopComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private iconRegistry: MatIconRegistry,
     private sanitizer: DomSanitizer,
-    @Inject(PLATFORM_ID) private platformId
+    @Inject(PLATFORM_ID) private platformId,
+    private state: TransferState,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.media = breakpointObserver;
@@ -37,13 +41,20 @@ export class NodeTopComponent implements OnInit {
 
   ngOnInit() {
     this.variables = this.variableService;
-    this.adminUrl = environment.adminUrl + '/content/proc/' + this.curNode[0].nid;
+    this.adminUrl = environment.adminUrl + '/admin/content/edit/' + this.curNode[0].nid;
     // page node crumb
     if (this.curNode[0].node_export.type[0].target_id === 'page') {
-      this.connection = this.apiService.getNSMI().subscribe(results => {
-        this.nsmi = results.nsmi;
-        this.doneLoading();
-      });
+      const _nsmi = this.state.get(NSMI, null as any);
+      if (_nsmi !== null) {
+        this.nsmi = _nsmi;
+        this.working = false;
+      } else {
+        this.connection = this.apiService.getNSMI().subscribe(results => {
+          this.nsmi = results.nsmi;
+          this.state.set(NSMI, this.nsmi as any);
+          this.doneLoading();
+        });
+      }
     } else {
       this.working = false;
     }
@@ -90,12 +101,19 @@ export class NodeTopComponent implements OnInit {
         i.children.forEach(function (c) {
           if (c.tid === tid) {
             self.nsmi_term = i;
+            self.nsmi_subterm = c;
             output = true;
           }
         });
       }
     });
     return output;
+  }
+
+  print() {
+    if (this.isBrowser) {
+      window.print();
+    }
   }
 
 }

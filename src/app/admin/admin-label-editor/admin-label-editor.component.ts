@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialogRef } from '@angular/material';
 import { VariableService } from '../../services/variable.service';
-import { environment } from '../../../environments/environment';
 import { ApiService } from '../../services/api.service';
+import { ActivatedRoute } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-label-editor',
-  templateUrl: './label-editor.component.html',
-  styleUrls: ['./label-editor.component.scss']
+  selector: 'app-admin-label-editor-dialog',
+  templateUrl: './admin-label-editor.dialog.html',
 })
-export class LabelEditorComponent implements OnInit {
+export class AdminLabelEditorDialogComponent implements OnInit {
   public variables: any;
   public labels = [];
 
@@ -17,6 +17,7 @@ export class LabelEditorComponent implements OnInit {
     private variableService: VariableService,
     private route: ActivatedRoute,
     private apiService: ApiService,
+    public dialogRef: MatDialogRef<AdminLabelEditorDialogComponent>,
   ) {}
 
   ngOnInit() {
@@ -42,6 +43,10 @@ export class LabelEditorComponent implements OnInit {
     }
   }
 
+  onNoClick(): void {
+    this.dialogRef.close([]);
+  }
+
   resetItem(item: any) {
     item.src = JSON.parse(JSON.stringify(this.variables.site_vars[item.id]));
   }
@@ -59,5 +64,4 @@ export class LabelEditorComponent implements OnInit {
       });
     });
   }
-
 }

@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-
 import { ApiService } from '../../services/api.service';
 import { VariableService } from '../../services/variable.service';
 import { animate, query, style, transition, trigger } from '@angular/animations';
-import { MatIconRegistry } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from '../../../environments/environment';
+import { Router } from '@angular/router';
+import { makeStateKey, TransferState } from '@angular/platform-browser';
+
+const MENU = makeStateKey('menu');
 
 @Component({
   selector: 'app-menu',
@@ -34,35 +35,29 @@ export class MenuComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private variableService: VariableService,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer
+    private router: Router,
+    private state: TransferState,
   ) { }
 
   ngOnInit() {
-    this.connection = this.apiService.getMenu().subscribe(data => {
-      this.menu = data['main_menu'];
-      this.doneLoading();
-    });
+    const _menu = this.state.get(MENU, null as any);
+    if (_menu !== null) {
+      this.menu = _menu;
+    } else {
+      this.connection = this.apiService.getMenu().subscribe(data => {
+        this.menu = data['main_menu'];
+        this.state.set(MENU, this.menu as any);
+        this.doneLoading();
+      });
+    }
     this.variables = this.variableService;
     this.adminUrl = environment.adminUrl;
   }
 
   doneLoading() {
-    const self = this;
     if (this.connection) {
       this.connection.unsubscribe();
     }
-    this.menu.forEach(function(i) {
-      if (i.tid === '643' && i.term_export.field_pages_plus.length > 0) {
-        i.term_export.field_pages_plus.forEach(function(term) {
-          if (term.term_export && term.term_export.field_term_file.length > 0) {
-            self.iconRegistry.addSvgIcon(
-              'tid' + term.tid,
-              self.sanitizer.bypassSecurityTrustResourceUrl(term.term_export.field_term_file[0].url));
-          }
-        });
-      }
-    });
   }
 
   over(item: any) {
@@ -71,6 +66,14 @@ export class MenuComponent implements OnInit {
 
   out(item: any) {
     item.over = false;
+  }
+
+  isElder(id: string): boolean {
+    if (id === '643' && (this.router.url.indexOf('/en/self-help/537') !== -1 || this.router.url.indexOf('/es/self-help/537') !== -1)) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

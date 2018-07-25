@@ -4,6 +4,11 @@ import { VariableService } from '../../../services/variable.service';
 import { GridOptions } from 'ag-grid';
 import { TitleRenderComponent } from '../../admin-utils/title-render/title-render.component';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { MatDialog } from '@angular/material';
+import { AdminNodePickerDialogComponent } from '../admin-node-picker/admin-node-picker.component';
+import { ConfirmDialogComponent } from '../../admin-utils/confirm-dialog/confirm-dialog.component';
+import { SelectFilterComponent } from '../../admin-utils/select-filter/select-filter.component';
 
 @Component({
   selector: 'app-admin-blocks',
@@ -23,6 +28,7 @@ export class AdminBlocksComponent implements OnInit, AfterViewInit {
     private apiService: ApiService,
     private variableService: VariableService,
     private router: Router,
+    public dialog: MatDialog,
   ) {
     this.gridOptions = <GridOptions>{
       floatingFilter: true,
@@ -34,7 +40,8 @@ export class AdminBlocksComponent implements OnInit, AfterViewInit {
       floatingFiltersHeight: 50,
       enableColResize: true,
       frameworkComponents: {
-        'titleRenderer': TitleRenderComponent
+        'titleRenderer': TitleRenderComponent,
+        'selectFilter': SelectFilterComponent
       }
     };
   }
@@ -51,6 +58,17 @@ export class AdminBlocksComponent implements OnInit, AfterViewInit {
     this.variables.adminTitle = 'Blocks';
     const conn = this.apiService.getContentAdmin('block').subscribe( result => {
       this.blocks = result;
+      const lang = [
+        {value: ''},
+        {value: 'en'},
+        {value: 'es'},
+        {value: 'both'}
+      ];
+      const core = [
+        {value: ''},
+        {value: 'yes'},
+        {value: 'no'}
+      ];
       this.columns = [
         {
           headerName: 'Title',
@@ -61,6 +79,7 @@ export class AdminBlocksComponent implements OnInit, AfterViewInit {
           suppressMenu: true,
           floatingFilterComponentParams: { suppressFilterButton: true },
           cellRenderer: 'titleRenderer',
+          checkboxSelection: true,
         },
         {
           headerName: 'Language',
@@ -69,7 +88,25 @@ export class AdminBlocksComponent implements OnInit, AfterViewInit {
           minWidth: 125,
           valueGetter: this.getLang,
           suppressMenu: true,
-          floatingFilterComponentParams: { suppressFilterButton: true },
+          cellClass: this.getLang,
+          floatingFilterComponent: 'selectFilter',
+          floatingFilterComponentParams: {
+            suppressFilterButton: true,
+            opts: lang
+          },
+        },
+        {
+          headerName: 'Core',
+          width: 100,
+          maxWidth: 100,
+          minWidth: 100,
+          valueGetter: this.getManaged,
+          suppressMenu: true,
+          floatingFilterComponent: 'selectFilter',
+          floatingFilterComponentParams: {
+            suppressFilterButton: true,
+            opts: core
+          },
         },
       ];
       this.working = false;
@@ -85,6 +122,54 @@ export class AdminBlocksComponent implements OnInit, AfterViewInit {
 
   getLang(params: any): any {
     return params.data.node_export.field_lang_status[0].value;
+  }
+
+  getManaged(params: any): any {
+    if (params.data.node_export.field_managed && params.data.node_export.field_managed[0].value === '1') {
+      return 'Yes';
+    } else {
+      return 'No';
+    }
+  }
+
+  clearSelection() {
+    this.agGrid.api.deselectAll();
+  }
+
+  confirmDelete() {
+    const width = '250px';
+    const height = '110px';
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: width,
+      height: height,
+      maxWidth: '95vw',
+      maxHeight: '95vh'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteSelection();
+      }
+    });
+  }
+
+  deleteSelection() {
+    this.working = true;
+    const selection = this.agGrid.api.getSelectedNodes();
+    const obs = [];
+    const self = this;
+    selection.forEach(function (item) {
+      if (item.data.node_export.field_managed && item.data.node_export.field_managed[0].value !== '1') {
+        obs.push(self.apiService.deleteNode(item.data.nid, self.variables.token));
+      }
+    });
+    if (obs.length > 0) {
+      forkJoin(obs).subscribe( result => {
+        this.load();
+      });
+    } else {
+      this.working = false;
+    }
   }
 
 }

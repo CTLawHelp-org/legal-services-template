@@ -1,5 +1,9 @@
 .segment-wrapper {
   position:relative;
+  .seg-link {
+    font-style: italic;
+    font-weight: bold;
+  }
   .seg-expand {
     position:absolute;
     bottom:-16px;

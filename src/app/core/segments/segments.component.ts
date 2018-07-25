@@ -2,6 +2,7 @@ import { Component, Inject, Input, OnInit, PLATFORM_ID, ViewEncapsulation } from
 import { VariableService } from '../../services/variable.service';
 import { isPlatformBrowser } from '@angular/common';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-segments',
@@ -21,7 +22,8 @@ export class SegmentsComponent implements OnInit {
   constructor(
     private variableService: VariableService,
     @Inject(PLATFORM_ID) private platformId,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
+    private route: ActivatedRoute,
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
     this.media = breakpointObserver;
@@ -30,7 +32,12 @@ export class SegmentsComponent implements OnInit {
   ngOnInit() {
     this.variables = this.variableService;
     if (this.src.length > 0) {
-      this.curitem = this.src[0];
+      if (this.route.snapshot.queryParams && this.route.snapshot.queryParams['s'] !== undefined) {
+        this.curIndex = parseInt(this.route.snapshot.queryParams['s'], 10);
+        this.curitem = this.src[this.curIndex];
+      } else {
+        this.curitem = this.src[0];
+      }
     }
   }
 

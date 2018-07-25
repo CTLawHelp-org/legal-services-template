@@ -7,6 +7,7 @@ import { MatIconRegistry } from '@angular/material';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { isPlatformBrowser } from '@angular/common';
+import { Angulartics2 } from 'angulartics2';
 import { MetaService } from '@ngx-meta/core';
 
 @Component({
@@ -29,18 +30,14 @@ export class TriageLandingComponent implements OnInit {
     private variableService: VariableService,
     private route: ActivatedRoute,
     private router: Router,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
     private breakpointObserver: BreakpointObserver,
     @Inject(PLATFORM_ID) private platformId,
+    private angulartics2: Angulartics2,
     private meta: MetaService,
     @Inject(DOCUMENT) private document: any
   ) {
     this.variableService.setPageTitle('Legal Help Finder');
     this.media = breakpointObserver;
-    iconRegistry.addSvgIcon(
-      'legalhelp',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/legal-help-finder.svg'));
   }
 
   ngOnInit() {
@@ -63,6 +60,7 @@ export class TriageLandingComponent implements OnInit {
       this.state = '1';
       this.continue();
     }
+    this.angulartics2.pageTrack.next({ path: this.router.url });
     if (this.connection) {
       this.connection.unsubscribe();
     }
@@ -104,6 +102,7 @@ export class TriageLandingComponent implements OnInit {
     const conn = forkJoin([status_obs, issues_obs, state_obs, loc_obs, getloc_obs]).subscribe(results => {
       this.working = false;
       conn.unsubscribe();
+      this.router.navigate([this.variables.lang + '/legal-help']);
     });
   }
 

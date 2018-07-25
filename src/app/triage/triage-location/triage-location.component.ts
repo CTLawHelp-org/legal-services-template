@@ -27,17 +27,9 @@ export class TriageLocationComponent implements OnInit {
   constructor(
     private apiService: ApiService,
     private variableService: VariableService,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
     private breakpointObserver: BreakpointObserver
   ) {
     this.media = breakpointObserver;
-    iconRegistry.addSvgIcon(
-      'location',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/map.svg'));
-    iconRegistry.addSvgIcon(
-      'important',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/important.svg'));
   }
 
   ngOnInit() {

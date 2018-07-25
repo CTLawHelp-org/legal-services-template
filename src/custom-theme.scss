@@ -19,7 +19,7 @@
 }
 
 $custom-typography: mat-typography-config(
-  $font-family:   'Nunito, sans-serif',
+  $font-family:   'Open Sans, sans-serif',
   $display-4:     mat-typography-level(112px, 112px, 700, 'Palanquin, sans-serif'),
   $display-3:     mat-typography-level(56px, 56px, 700, 'Palanquin, sans-serif'),
   $display-2:     mat-typography-level(45px, 48px, 700, 'Palanquin, sans-serif'),
@@ -30,7 +30,7 @@ $custom-typography: mat-typography-config(
   $subheading-1:  mat-typography-level(18px, 22px, 600, 'Palanquin, sans-serif'), // H4
   $body-2:        mat-typography-level(16px, 24px, 500),
   $body-1:        mat-typography-level(16px, 24px, 400),
-  $caption:       mat-typography-level(12px, 20px, 400),
+  $caption:       mat-typography-level(12px, 14px, 400),
   $button:        mat-typography-level(15px, 15px, 500),
     // Line-height must be unit-less fraction of the font-size.
   $input:         mat-typography-level(16px, 1.125, 400)

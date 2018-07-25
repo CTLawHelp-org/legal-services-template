@@ -3,7 +3,7 @@
     <app-loader></app-loader>
   </div>
   <div *ngIf="!working">
-    <div class="pad border-bottom">
+    <div class="pad-r border-bottom">
       <div>
         <h1 fxHide fxShow.gt-sm class="no-margin"><app-label src="search_title"></app-label></h1>
         <h2 fxHide.gt-sm class="no-margin"><app-label src="search_title"></app-label></h2>
@@ -16,7 +16,14 @@
         <mat-tab-group class="triage-summary-tabs" [selectedIndex]="currentIdx" (selectedTabChange)="tabChange($event)">
           <mat-tab *ngFor="let item of searches; let last = last; let index = index;">
             <ng-template mat-tab-label>
-              <h4 class="no-margin"><em>{{item.key}}</em></h4>
+              <div fxLayout="row" fxLayoutAlign="start center">
+                <h4 class="no-margin"><em>{{item.key}}</em></h4>
+                <div *ngIf="searches.length > 1" fxLayout="column" fxLayoutAlign="center center">
+                  <button aria-label="Close" (click)="remove(index)" class="primary icon item" mat-icon-button>
+                    <mat-icon>close</mat-icon>
+                  </button>
+                </div>
+              </div>
             </ng-template>
             <!--Title / Toggle / Remove-->
             <div fxLayout="row" fxLayoutAlign="start center" class="pad">
@@ -29,13 +36,37 @@
                   <div fxLayout="column" fxLayoutAlign="center center" class="margin-right">
                     <button *ngIf="media.isMatched('(min-width: 960px)')" aria-label="Print" class="primary icon item"
                             mat-icon-button mat-raised-button (click)="print()">
-                      <app-icon svgClass="svg sm" svgIcon="print"></app-icon>
+                      <app-icon svgClass="svg sm" svgIcon="tid717"></app-icon>
                     </button>
                   </div>
-                  <div *ngIf="searches.length > 1" fxLayout="column" fxLayoutAlign="center center">
-                    <button aria-label="Close" (click)="remove(index)" class="primary icon item" mat-icon-button mat-raised-button>
-                      <mat-icon>close</mat-icon>
-                    </button>
+                </div>
+              </div>
+            </div>
+            <!--Spelling Suggestions-->
+            <div *ngIf="item.spelling.length > 0" class="pad">
+              <strong>Did you mean: </strong>
+              <span><a [routerLink]="[ '/' + variables.lang + '/search', item.new_key ]"
+                       (click)="remove(index)">{{item.new_key}}</a></span>
+            </div>
+            <!--Triage Search Results-->
+            <div *ngIf="item.search.triage.length > 0" class="pad">
+              <div fxLayout="column" class="highlight border pad border-radius">
+                <div fxLayout="row" fxLayoutAlign="start center">
+                  <app-icon svgClass="svg sm primary icon margin-right" svgIcon="tid631"></app-icon>
+                  <h3 class="no-margin"><app-label src="search_triage_label"></app-label></h3>
+                </div>
+                <div>
+                  <div class="margin-bottom margin-top">
+                    <app-label src="search_triage"></app-label>
+                  </div>
+                  <div>
+                    <ul>
+                      <li *ngFor="let item of item.search.triage; let last = last;">
+                        <a [routerLink]="[ '/' + variables.lang + '/legal-help/view', item.tid]">
+                          <strong [innerHTML]="item.name"></strong>
+                        </a>
+                      </li>
+                    </ul>
                   </div>
                 </div>
               </div>
@@ -76,10 +107,12 @@
           </mat-tab>
         </mat-tab-group>
       </div>
-      <!--Blocks-->
-      <div fxFlex="100" fxFlex.gt-sm="30" class="blocks"
-           [ngClass]="{'backg1 bg': !media.isMatched('(min-width: 960px)'), 'padding-left border-left': media.isMatched('(min-width: 960px)')}">
-        <app-self-help-menu></app-self-help-menu>
+      <!--Right Block System-->
+      <div *ngIf="hasBlocks && blocks['right'].length > 0" fxFlex="100" fxFlex.gt-sm="30" class="blocks side-pad-r"
+           [ngClass]="{'backg1 bg': !media.isMatched('(min-width: 960px)'), 'border-left': media.isMatched('(min-width: 960px)')}">
+        <div *ngFor="let item of blocks['right']">
+          <app-block [nid]="item"></app-block>
+        </div>
       </div>
     </div>
   </div>

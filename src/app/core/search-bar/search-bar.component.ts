@@ -25,11 +25,6 @@ export class SearchBarComponent implements OnInit {
     private router: Router,
     @Inject(PLATFORM_ID) private platformId,
   ) {
-
-    iconRegistry.addSvgIcon(
-      'search',
-      sanitizer.bypassSecurityTrustResourceUrl('../../assets/search.svg'));
-
     this.variables = this.variableService;
   }
 

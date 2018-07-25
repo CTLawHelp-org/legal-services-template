@@ -7,7 +7,9 @@ import { MatDialog, MatIconRegistry } from '@angular/material';
 import { isPlatformBrowser } from '@angular/common';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { DOCUMENT, DomSanitizer } from '@angular/platform-browser';
+import { Angulartics2 } from 'angulartics2';
 import { MetaService } from '@ngx-meta/core';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-triage-results',
@@ -24,25 +26,29 @@ export class TriageResultsComponent implements OnInit {
   public user_status: any;
   public user_issues: any;
   public id: string;
+  public hasBlocks = false;
+  public blocks = {
+    content_top: [],
+    left: [],
+    right: [],
+    content_bottom: [],
+  };
 
   constructor(
     private variableService: VariableService,
+    private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router,
     private breakpointObserver: BreakpointObserver,
     public dialog: MatDialog,
     @Inject(PLATFORM_ID) private platformId,
-    private iconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
+    private angulartics2: Angulartics2,
     private meta: MetaService,
     @Inject(DOCUMENT) private document: any
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
     this.variableService.setPageTitle('Help for Your Legal Problem');
     this.media = breakpointObserver;
-    iconRegistry.addSvgIcon(
-      'legalhelp',
-      sanitizer.bypassSecurityTrustResourceUrl('../../../assets/legal-help-finder.svg'));
   }
 
   ngOnInit() {
@@ -54,12 +60,21 @@ export class TriageResultsComponent implements OnInit {
     const loc_obs = this.variableService.getGetLoc();
     const status_obs = this.variableService.getStatus();
     const issue_obs = this.variableService.getIssues();
-    const connection = forkJoin([loc_obs, status_obs, issue_obs]).subscribe(results => {
+    const blocks = this.apiService.getBlocks('all', 'triageresults', 'all');
+    const connection = forkJoin([loc_obs, status_obs, issue_obs, blocks]).subscribe(results => {
       this.show_loc = results[0] !== null ? results[0] : false;
       this.user_status = results[1];
       this.user_issues = results[2];
+      if (results[3].length > 0) {
+        this.setupBlocks(results[3][0], results[3][0].term_export.field_block_setup);
+      }
       connection.unsubscribe();
+      this.angulartics2.pageTrack.next({ path: this.router.url });
       this.working = false;
+    });
+
+    this.variableService.issuesSubject.subscribe(result => {
+      this.user_issues = result;
     });
 
     this.variableService.getlocSubject.subscribe(result => {
@@ -73,6 +88,20 @@ export class TriageResultsComponent implements OnInit {
     this.variableService.statusSubject.subscribe(result => {
       this.user_status = result;
     });
+  }
+
+  setupBlocks(src: any, items: any) {
+    this.hasBlocks = true;
+    const self = this;
+    items.forEach(function (item) {
+      if (!item.processed) {
+        item.value = item.value.split(',');
+        item.processed = true;
+      }
+      self.blocks[item.value[0]][item.value[1]] = item.target_id;
+    });
+    this.variableService.currentBlocksSrc = src;
+    this.variableService.currentBlocks = items;
   }
 
   hasStatus(tid: string): boolean {
@@ -117,7 +146,7 @@ export class TriageResultsComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // this.working = false;
+      // ok
     });
   }
 

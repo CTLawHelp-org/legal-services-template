@@ -4,15 +4,15 @@
   </div>
   <div *ngIf="!working" fxLayout="row wrap" fxLayoutAlign="center stretch" class="triage-items">
     <!-- Triage Status -->
-    <div [fxShow]="!status_set || media.isMatched('(min-width: 960px)')" fxFlex="100" fxFlex.gt-sm="27" class="status-wrapper"
-         [ngClass]="{'padding-right': media.isMatched('(min-width: 960px)')}">
+    <div [fxShow]="!status_set || media.isMatched('(min-width: 960px)')" fxFlex="100" fxFlex.gt-sm="28"
+         class="status-wrapper pad-r" [ngClass]="{'padding-right': media.isMatched('(min-width: 960px)')}">
       <div class="pad site-label text-center">
         <h2 class="headline no-margin">
           <app-label src="triage_status"></app-label>
         </h2>
       </div>
       <div class="margin-top pad">
-        <div class="pad triage-status">
+        <div class="triage-status">
           <div *ngFor="let item of status; let last = last;" [ngClass]="{'margin-bottom': !last}">
             <mat-checkbox [(ngModel)]="item.enabled">
               <div *ngIf="variables.lang === 'en'">
@@ -25,13 +25,16 @@
           </div>
         </div>
       </div>
+      <div class="pad">
+        <app-block [nid]="'796'"></app-block>
+      </div>
       <div *ngIf="!status_set && !media.isMatched('(min-width: 960px)')" class="pad backg1 bg" fxLayout="row" fxLayoutAlign="end center">
         <button mat-raised-button class="primary button" appHighlight (click)="mnext()">Next</button>
       </div>
     </div>
     <!-- Legal Issues -->
     <div [fxShow]="status_set || media.isMatched('(min-width: 960px)')" id="issues" fxFlex="100" fxFlex.gt-sm
-         fxLayout="column" class="issue-wrapper" [ngClass]="{'border-left padding-left': media.isMatched('(min-width: 960px)')}">
+         fxLayout="column" class="issue-wrapper pad-r" [ngClass]="{'border-left padding-left': media.isMatched('(min-width: 960px)')}">
       <div class="pad site-label text-center">
         <h2 class="headline no-margin">
           <app-label src="triage_issue"></app-label>
@@ -43,7 +46,7 @@
           <div fxLayout="row" [ngClass]="{'pad': media.isMatched('(min-width: 960px)')}">
             <div fxFlex>
               <div fxLayout="row" fxLayoutAlign="start center">
-                <app-icon *ngIf="item.term_export.field_term_file.length > 0"
+                <app-icon *ngIf="item.term_export.field_public_term_file.length > 0"
                           svgClass="margin-right svg md" svgIcon="tid{{item.id}}"></app-icon>
                 <div fxFlex>
                   <div *ngIf="first">
@@ -93,11 +96,12 @@
       <!-- Top Level -->
       <div *ngIf="history.length < 1" fxLayout="row wrap" fxLayoutAlign="space-around stretch" class="top pad">
         <div fxFlex="100" fxFlex.gt-sm="50" *ngFor="let item of current" fxLayout="column" class="pad">
-          <div fxLayout="column" (click)="choose(item)" class="mat-elevation-z1 pad lvl-item outline" appHighlight>
+          <div fxLayout="column" (click)="choose(item)" appHighlight
+               class="mat-elevation-z1 border-radius pad lvl-item inner-shadow">
             <div fxLayout="row" fxLayoutAlign="start center">
-              <app-icon *ngIf="item.term_export.field_term_file.length > 0"
+              <app-icon *ngIf="item.term_export.field_public_term_file.length > 0"
                         svgClass="margin-right svg md" svgIcon="tid{{item.id}}"></app-icon>
-              <div fxFlex>
+              <div fxFlex class="primary color">
                 <h2 class="no-margin">
                   <div *ngIf="variables.lang === 'en'">
                     <span [innerHTML]="item.name"></span>
